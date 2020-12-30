@@ -32,6 +32,46 @@ char    **ft_lst_to_array(t_list    *lst)
     return (argv);
 }
 
+t_list *lstchr(t_list *head, char *s)
+{
+    t_list *curr;
+    int len;
+
+    if (!s)
+        return (NULL);
+    len = ft_strlen(s);
+    curr = head;
+    while (curr)
+    {
+        if (!ft_strncmp(s, curr->content, len) && *(((char *)curr->content) + len) == '=')
+            return (curr);
+        curr = curr->next;
+    }
+    return (NULL);
+}
+
+void delete_node(char *s)
+{
+    int len;
+    t_list *curr;
+    t_list *prev;
+    /* TODO: you need to update the env_head to check for updates */
+    len = 0;
+    curr = g_env.env_head;
+    prev = curr;
+    while (curr)
+    {   
+        while (((char *)curr->content)[len] != '=')
+            len++;
+        if (!strncmp(curr->content, s, len))
+        {
+            prev->next = curr->next;
+            ft_lstdelone(curr, free);
+        }
+        curr = curr ->next;
+    }
+}
+
 t_list *ft_array_to_lst(char **array)
 {
     t_list *head;
@@ -42,7 +82,7 @@ t_list *ft_array_to_lst(char **array)
     i = 0;
     head = NULL;
     while (array[i])
-    {
+    {   
         ft_lstadd_back(&head, ft_lstnew(array[i]));
         i++;
     }
@@ -91,6 +131,7 @@ void ft_cd(char **argv)
     // char *s1;
     int ret;
 
+    g_env.home = get_home();
     if (argv[1])
         ret = chdir(argv[1]);
     else
@@ -107,19 +148,109 @@ void ft_pwd(char **argv)
     ft_putstr_fd(getcwd(NULL, 0), 1);
 }
 
-void    ft_export(char **argv)
+int is_valid_identifier(char *s)
 {
-    int fd;
+    int i;
 
-    fd = open("/usr/bin/env", O_APPEND);
-    char **sp = ft_split(argv[1], '=');
-    ft_putnbr_fd(fd, 2);
-    ft_putstr_fd(sp[0], fd);
-    ft_putstr_fd("=", fd);
-    ft_putstr_fd(sp[1], fd);
-    ft_putstr_fd("\n", fd);
+    i = 0;
+    if (!ft_isalpha(s[0]) && s[0] != '_')
+        return (0);
+    while (s[i])
+    {
+        if (!ft_isalpha(s[i]) && s[i] != '_' && !ft_isdigit(s[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
+void ft_print_path(char *s)
+{
+    int i;
+
+    i = 0;
+    while (s[i])
+    {
+        ft_putchar_fd(s[i], 1);
+        if (s[i] == '=')
+            break;
+        i++;
+    }
+    i++;
+    ft_putchar_fd('"', 1);
+    while (s[i])
+    {
+        ft_putchar_fd(s[i], 1);
+        i++;
+    }
+    ft_putchar_fd('"', 1);
+}
+
+void show_all_env(char *start_with)
+{
+    t_list *curr;
+
+    curr = g_env.env_head;
+    while (curr)
+    {
+        ft_putstr_fd(start_with, 1);
+        ft_print_path(curr->content);
+        ft_putstr_fd("\n", 1);
+        curr = curr->next;
+    }
+}
+
+void    ft_export(char **argv)
+{
+    t_list *temp;
+    char **sp;
+    char *pfree;
+
+    sp = ft_split(argv[1], '=');
+    /*
+        if (!sp)
+            export have another behaviour if it's called only "export"
+            SEGV
+        don't forget: export ll=fef=fef
+    */
+    if (argv[1] == NULL)
+    {
+        show_all_env("declare -x ");
+        return ;
+    }
+    /* check it again */
+    if (!is_valid_identifier(sp[0]))
+    {
+        ft_fprintf(2, "export: `%s': not a valid identifier\n", argv[1]);
+        return ;
+    }
+    // ft_fprintf(2, "%p\n", sp[0]);
+    temp = lstchr(g_env.env_head, sp[0]);
+    if (temp)
+    {
+        pfree = temp->content;
+        temp->content = ft_strdup(argv[1]);
+        free(pfree);
+    }
+    else
+    {
+        ft_lstadd_back(&g_env.env_head, ft_lstnew(argv[1]));
+    }
+    temp = lstchr(g_env.env_head, sp[0]);
+    if (temp)
+    {
+        ft_putstr_fd(temp->content, 2);
+    }
+    else
+    {
+        ft_putstr_fd("!exist\n", 2);
+    }
+}
+
+void ft_unset(char **argv)
+{
+    delete_node(argv[1]);
+}
 
 void treat_cmd(char **argv, int cmd_id)
 {
@@ -131,6 +262,8 @@ void treat_cmd(char **argv, int cmd_id)
         ft_pwd(argv);
     else if (cmd_id == 4)
         ft_export(argv);
+    else if (cmd_id == 5)
+        ft_unset(argv);
 }
 
 int ft_try_path(char **argv)

@@ -164,12 +164,27 @@ int     get_command_line(char **line)
 char *get_path()
 {
     t_list *curr;
+    /* TODO: you need to update the env_head to check for updates */
+    curr = g_env.env_head;
+    while (curr)
+    {   
+        if (!strncmp(curr->content, "PATH", 4))
+        {
+            return (curr->content + 5);
+        }
+        curr = curr ->next;
+    }
+    return (NULL);
+}
+
+char *get_home()
+{
+    t_list *curr;
 
     curr = g_env.env_head;
     while (curr)
     {   
-        
-        if (!strncmp(curr->content, "PATH", 4))
+        if (!strncmp(curr->content, "HOME", 4))
         {
             return (curr->content + 5);
         }
@@ -181,7 +196,6 @@ char *get_path()
 int     main(int argc, char **argv, char **env)
 {
     g_env.env_head = ft_array_to_lst(env);
-    ft_putstr_fd(g_env.env_head->content, 2);
     g_env.path = ft_split(get_path(), ':');
     argc = 0;
     argv = NULL;
