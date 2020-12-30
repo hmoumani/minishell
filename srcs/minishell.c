@@ -14,7 +14,7 @@
 
 void ft_exit() {
     ft_putendl_fd("exit", 1);
-    exit(2);
+    exit(0);
 }
 
 void    ft_error(char *str)
@@ -37,14 +37,10 @@ t_command   *ft_new_command(int in, int out)
     return (cmd);
 }
 
-void    show_prompt(char *type)
-{
-    if (!type) {
-        ft_fprintf(1, BBLU "minishell %d%s> "RESET, g_minishell.return_code,
+void    show_prompt()
+{    
+    ft_fprintf(1, BBLU "minishell %d%s> "RESET, g_minishell.return_code,
                 g_minishell.return_code ? BRED : BGRN);
-    } else if (type == PIPE) {
-        ft_fprintf(1, "pipe > ");
-    }
 }
 
 void    ft_split_free(char **ptr)
@@ -108,7 +104,7 @@ int    ft_precess_cmd(char *str)
     cmd = g_minishell.cmd_tail->content;
     // ft_fprintf(1, "%s\n", str);
     if (((ft_strncmp(str, OUTPUT_RED, 1) == 0 || ft_strncmp(str, APP_OUTPUT_RED, 2) == 0 
-        || ft_strncmp(str, INPUT_RED, 1) == 0) && (g_minishell.read_next != NULL && g_minishell.read_next != PIPE)) ||
+        || ft_strncmp(str, INPUT_RED, 1) == 0) && g_minishell.read_next != NULL) ||
         ((ft_strncmp(str, PIPE, 1) == 0 || ft_strncmp(str, SEMI_COLUMN, 1) == 0) && 
         (g_minishell.read_next != NULL || cmd->argv == NULL)))
         return ft_syntax_error(str);
@@ -165,30 +161,42 @@ int     get_command_line(char **line)
     return (r);
 }
 
-int     main(void)
+char *get_path(char **env)
 {
+    int i; 
+
+    i = 0;
+    while (env[i])
+    {   ft_putstr_fd(env[i], 2);
+        ft_putstr_fd("\n", 2);
+        if (!strncmp(env[i], "PATH", 4))
+        {
+            return (env[i] + 5);
+        }
+        else if (!strncmp(env[i], "HOME", 4))
+        {
+            g_env.home = env[i] + 5;
+        }
+        i++;
+    }
+    return (NULL);
+}
+
+int     main(int argc, char **argv, char **env)
+{
+    g_env.path = ft_split(get_path(env), ':');
+    g_env.env_head = ft_array_to_lst(env);
+    argc = 0;
+    argv = NULL;
     signal(SIGINT, handle_sigint);
     signal(SIGQUIT, handle_sigint);
     g_minishell.return_code = 0;
     while (1)
     {
-        if (g_minishell.read_next == PIPE) {
-
-            show_prompt(PIPE);
-            // g_minishell.cmd_head = ft_lstnew(ft_new_command(0, 1));
-            // g_minishell.cmd_tail = g_minishell.cmd_head;
-            g_minishell.stat = 1;
-            g_minishell.forked = 0;
-            g_minishell.read_next = NULL;
-            g_minishell.pos = 0;
-            get_command_line(&g_minishell.command_line);
-        }
-        else {
-            show_prompt(NULL);
-            init();
-            // g_minishell.command_line = get_command_line();
-            get_command_line(&g_minishell.command_line);
-        }
+        init();
+        show_prompt();
+        // g_minishell.command_line = get_command_line();
+        get_command_line(&g_minishell.command_line);
         // get_next_line(0, &g_minishell.command_line);
         // if (r == 0 && !g_minishell.command_line)
             // ft_exit();
@@ -209,16 +217,15 @@ int     main(void)
             g_minishell.pos += len;
             // g_minishell.pos++;
         }
-        if (g_minishell.stat && (g_minishell.read_next != NULL && g_minishell.read_next != PIPE))
+        if (g_minishell.stat && g_minishell.read_next != NULL)
             ft_syntax_error("\n");
 
         // print_commands();
-        if (g_minishell.stat && g_minishell.read_next == NULL) {
+        if (g_minishell.stat)
             execute_commands();
-            ft_lstclear(&g_minishell.cmd_head, ft_free_command);
-        }
         free(g_minishell.command_line);
         g_minishell.command_line = NULL;
+        ft_lstclear(&g_minishell.cmd_head, ft_free_command);
     }
     return (EXIT_SUCCESS);
 }

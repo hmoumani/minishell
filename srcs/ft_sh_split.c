@@ -27,44 +27,6 @@ int	ft_on_char(const char *str, int i, char *c)
 	return 0;
 }
 
-char	*ft_strappend(char *str, char c)
-{
-	char strchar[2];
-
-	strchar[0] = c;
-	strchar[1] = 0;
-	return (ft_strjoin(str, strchar));	
-}
-
-char	*ft_quotes_convert(char *str)
-{
-	int 	i;
-	char 	*res;
-	char	*tmp;
-    char    quote[2];
-
-	i = 0;
-	ft_bzero(quote, 2);
-	res = ft_strdup("");
-	while (str[i])
-	{
-		if (!quote[0] || ft_on_char(str, i, quote))
-		{
-			if (ft_on_char(str, i, "'\"")) {
-                quote[0] = quote[0] ? 0 : str[i];
-				i++;
-				if (!str[i])
-					break;
-			}
-        }
-		tmp = res;
-		res = ft_strappend(res, str[i]);
-		free(tmp);
-        i++;
-	}
-	return (res);
-}
-
 static int	ft_countwords(const char *str, char *c)
 {
 	int     i;

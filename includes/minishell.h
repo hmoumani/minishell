@@ -19,6 +19,9 @@
 #include <signal.h>
 #include <string.h>
 #include <errno.h>
+#include <dirent.h>
+#include <sys/types.h>
+
 
 #define BCYN "\e[1;36m"
 #define BBLU "\e[1;33m"
@@ -33,29 +36,35 @@
 #define SEMI_COLUMN ";"
 #define SEP " ;|<>"
 
+typedef struct s_env{
+	char **path;
+	char *home;
+	t_list **env_head;
+}               t_env;
+
 typedef struct  s_minishell
 { 
-    int         return_code;
-    int         stat;
-    char        *command_line;
-    int         pos;
-    int         pipe[2];
-    t_list      *cmd_head;
-    t_list      *cmd_tail;
-    char        *read_next;
-    int         forked;
+	int         return_code;
+	int         stat;
+	char        *command_line;
+	int         pos;
+	int         pipe[2];
+	t_list      *cmd_head;
+	t_list      *cmd_tail;
+	char        *read_next;
+	int         forked;
 }               t_minishell;
 
 typedef struct  s_command
 {
-    t_list  *argv;
-    // char    **argv;
-    t_list  *outFiles;
-    t_list  *aoutFiles;
-    t_list  *inFiles;
-    int     outRed;
-    int     inRed;
-    // char    *read_next;
+	t_list  *argv;
+	// char    **argv;
+	t_list  *outFiles;
+	t_list  *aoutFiles;
+	t_list  *inFiles;
+	int     outRed;
+	int     inRed;
+	// char    *read_next;
 }               t_command;
 
 // typedef struct  s_cmd_list
@@ -66,7 +75,7 @@ typedef struct  s_command
 
 
 t_minishell g_minishell;
-
+t_env g_env;
 
 int         ft_handle_cmd(char *str);
 int         ft_handle_pipe(char *str);
@@ -88,7 +97,7 @@ void    show_prompt();
 void    open_redirect_files(t_command *cmd);
 void    ft_free_command(void *cmd);
 void    free_redirect_files();
-char	*ft_quotes_convert(char *str);
+t_list	**ft_array_to_lst(char **array);
 
 // char	**ft_free(char **ptr, size_t size);
 

@@ -1,0 +1,13 @@
+Makefile
+README.md
+as
+b
+d
+ft_printf
+gnl
+includes
+libft
+minishell
+srcs
+test.c
+test.py
