@@ -39,7 +39,7 @@
 typedef struct s_env{
 	char **path;
 	char *home;
-	t_list **env_head;
+	t_list *env_head;
 }               t_env;
 
 typedef struct  s_minishell
@@ -97,7 +97,7 @@ void    show_prompt();
 void    open_redirect_files(t_command *cmd);
 void    ft_free_command(void *cmd);
 void    free_redirect_files();
-t_list	**ft_array_to_lst(char **array);
+t_list	*ft_array_to_lst(char **array);
 
 // char	**ft_free(char **ptr, size_t size);
 

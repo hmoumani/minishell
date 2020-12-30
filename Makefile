@@ -18,7 +18,7 @@ SRC += gnl/get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 
-FLAGS=-Wall -Wextra -Werror -g
+FLAGS=-Wall -Wextra -Werror -fsanitize=address -g
 
 all: $(NAME)
 

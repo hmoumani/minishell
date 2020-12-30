@@ -32,17 +32,18 @@ char    **ft_lst_to_array(t_list    *lst)
     return (argv);
 }
 
-t_list **ft_array_to_lst(char **array)
+t_list *ft_array_to_lst(char **array)
 {
-    t_list **head;
+    t_list *head;
     int i;
 
-    if (!(head = malloc(sizeof(t_list *))))
-        return (NULL);
+    // if (!(head = malloc(sizeof(t_list *))))
+    //     return (NULL);
     i = 0;
+    head = NULL;
     while (array[i])
     {
-        ft_lstadd_back(head, ft_lstnew(array[i]));
+        ft_lstadd_back(&head, ft_lstnew(array[i]));
         i++;
     }
     return (head);

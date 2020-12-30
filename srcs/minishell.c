@@ -161,31 +161,28 @@ int     get_command_line(char **line)
     return (r);
 }
 
-char *get_path(char **env)
+char *get_path()
 {
-    int i; 
+    t_list *curr;
 
-    i = 0;
-    while (env[i])
-    {   ft_putstr_fd(env[i], 2);
-        ft_putstr_fd("\n", 2);
-        if (!strncmp(env[i], "PATH", 4))
+    curr = g_env.env_head;
+    while (curr)
+    {   
+        
+        if (!strncmp(curr->content, "PATH", 4))
         {
-            return (env[i] + 5);
+            return (curr->content + 5);
         }
-        else if (!strncmp(env[i], "HOME", 4))
-        {
-            g_env.home = env[i] + 5;
-        }
-        i++;
+        curr = curr ->next;
     }
     return (NULL);
 }
 
 int     main(int argc, char **argv, char **env)
 {
-    g_env.path = ft_split(get_path(env), ':');
     g_env.env_head = ft_array_to_lst(env);
+    ft_putstr_fd(g_env.env_head->content, 2);
+    g_env.path = ft_split(get_path(), ':');
     argc = 0;
     argv = NULL;
     signal(SIGINT, handle_sigint);
