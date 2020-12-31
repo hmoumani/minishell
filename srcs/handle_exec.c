@@ -56,19 +56,27 @@ void delete_node(char *s)
     t_list *curr;
     t_list *prev;
     /* TODO: you need to update the env_head to check for updates */
-    len = 0;
     curr = g_env.env_head;
     prev = curr;
     while (curr)
-    {   
-        while (((char *)curr->content)[len] != '=')
+    {
+        len = 0;
+        // printf("*** %s\n", ((char *)curr->content));
+        while (((char *)curr->content)[len] != '='){
+            printf("%d\n", len);
             len++;
+        }
+        // printf("---> %d\n", strncmp(curr->content, s, len));
         if (!strncmp(curr->content, s, len))
         {
+            ft_fprintf(2, "hi");
             prev->next = curr->next;
             ft_lstdelone(curr, free);
+            ft_fprintf(2, "%p *** %p\n", prev, curr);
+            return ;
         }
-        curr = curr ->next;
+        prev = prev->next;
+        curr = curr->next;
     }
 }
 
@@ -83,7 +91,7 @@ t_list *ft_array_to_lst(char **array)
     head = NULL;
     while (array[i])
     {   
-        ft_lstadd_back(&head, ft_lstnew(array[i]));
+        ft_lstadd_back(&head, ft_lstnew(ft_strdup(array[i])));
         i++;
     }
     return (head);
@@ -234,7 +242,7 @@ void    ft_export(char **argv)
     }
     else
     {
-        ft_lstadd_back(&g_env.env_head, ft_lstnew(argv[1]));
+        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[1])));
     }
     temp = lstchr(g_env.env_head, sp[0]);
     if (temp)
