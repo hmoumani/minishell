@@ -106,6 +106,7 @@ void ft_cd(char **argv);
 void    ft_export(char **argv);
 void ft_unset(char **argv);
 void ft_env(char **argv);
+void ft_exit_buildin(char **argv);
 
 
 

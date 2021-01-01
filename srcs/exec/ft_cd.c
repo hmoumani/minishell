@@ -25,5 +25,12 @@ void ft_cd(char **argv)
         ret = chdir(g_env.home);
     }
     if (ret < 0)
+    {
+        ft_putstr_fd("minishell: ", 2);
+        ft_putstr_fd("cd: ", 2);
+        ft_putstr_fd(argv[1], 2);
+        ft_putstr_fd(": ", 2);
         ft_putstr_fd(strerror(errno), 2);
+        ft_putstr_fd("\n", 2);
+    }
 }

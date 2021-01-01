@@ -17,4 +17,5 @@ void ft_pwd(char **argv)
 {
     argv = NULL;
     ft_putstr_fd(getcwd(NULL, 0), 1);
+    ft_putstr_fd("\n", 1);
 }

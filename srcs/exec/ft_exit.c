@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/01 14:07:08 by hmoumani          #+#    #+#             */
-/*   Updated: 2021/01/01 14:07:13 by hmoumani         ###   ########.fr       */
+/*   Created: 2021/01/01 14:40:57 by hmoumani          #+#    #+#             */
+/*   Updated: 2021/01/01 14:41:04 by hmoumani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void ft_echo(char **argv)
+void ft_exit_buildin(char **argv)
 {
-    int i;
-
     if (!argv[1])
-    {
-        ft_putstr_fd("\n", 1);
-        return ;
-    }
-    i = 1;
-    if (!strcmp(argv[1], "-n"))
-        i = 2;
-    while (argv[i])
-    {
-        ft_putstr_fd(argv[i], 1);
-        i++;
-        if (argv[i])
-            ft_putstr_fd(" ", 1);
-    }
-    if (strcmp(argv[1], "-n"))
-        ft_putstr_fd("\n", 1);
+        exit(0);
+    // TODO: needs some magic here, 200 is randmoly picked
+    exit(200);
 }
