@@ -98,7 +98,16 @@ void    open_redirect_files(t_command *cmd);
 void    ft_free_command(void *cmd);
 void    free_redirect_files();
 t_list	*ft_array_to_lst(char **array);
+t_list *lstchr(t_list *head, char *s);
 char *get_home();
+void ft_echo(char **argv);
+void ft_pwd(char **argv);
+void ft_cd(char **argv);
+void    ft_export(char **argv);
+void ft_unset(char **argv);
+void ft_env(char **argv);
+
+
 
 // char	**ft_free(char **ptr, size_t size);
 
