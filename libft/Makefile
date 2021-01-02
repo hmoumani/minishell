@@ -34,17 +34,18 @@ BOBJ=ft_lstnew_bonus.o ft_lstadd_front_bonus.o ft_lstsize_bonus.o \
 	ft_lstlast_bonus.o ft_lstadd_back_bonus.o ft_lstdelone.o \
 	ft_lstclear_bonus.o ft_lstiter_bonus.o ft_lstmap_bonus.o
 
-FLAGS=-Wall -Werror -Wextra -g
+FLAGS=-Wall -Werror -Wextra
 
+CC=clang
 all: $(NAME)
 
 $(NAME):
-	@gcc $(FLAGS) -c $(SRC) -I.
+	@$(CC) $(FLAGS) -c $(SRC) -I.
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 bonus:
-	@gcc $(FLAGS) -c $(SRC) $(BSRC) -I.
+	@$(CC) $(FLAGS) -c $(SRC) $(BSRC) -I.
 	@ar rc $(NAME) $(OBJ) $(BOBJ)
 	@ranlib $(NAME)	
 

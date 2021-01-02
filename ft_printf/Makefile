@@ -14,8 +14,10 @@ NAME=libftprintf.a
 
 all: $(NAME)
 
+CC=clang
+
 $(NAME):
-	@gcc -c ft*.c
+	@$(CC) -c ft*.c
 	@ar rc $(NAME) *.o
 	@ranlib $(NAME)
 

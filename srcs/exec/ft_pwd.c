@@ -15,7 +15,10 @@
 
 void ft_pwd(char **argv)
 {
+    char    *pwd;
+
     argv = NULL;
-    ft_putstr_fd(getcwd(NULL, 0), 1);
-    ft_putstr_fd("\n", 1);
+    pwd = getcwd(NULL, 0);
+    ft_putendl_fd(pwd, 1);
+    free(pwd);
 }

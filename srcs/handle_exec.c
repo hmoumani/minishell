@@ -42,7 +42,7 @@ t_list *ft_array_to_lst(char **array)
     i = 0;
     head = NULL;
     while (array[i])
-    {   
+    {
         ft_lstadd_back(&head, ft_lstnew(ft_strdup(array[i])));
         i++;
     }
@@ -94,19 +94,24 @@ int ft_try_path(char **argv)
     struct stat sb;
     char *env_args[] = { (char*)0 };
     char *s = NULL;
+    char     *tmp;
 
     i = 0;
     // printf("%s", argv[0]);
     while (g_env.path[i])
     {
         s = ft_strjoin(g_env.path[i], "/");
+        tmp = s;
         s = ft_strjoin(s, argv[0]);
+        free(tmp);
         // printf("%s\n", s);
         if (stat(s, &sb) == 0 && sb.st_mode & S_IXUSR)
 		{
             execve(s, argv, env_args);
+            free(s);
             return (1);
         }
+        free(s);
         i++;
     }
     return (0);
@@ -132,7 +137,7 @@ void ft_redirect(char **argv)
         if (ft_try_path(argv))
             return ;
     }
-    printf("minishell: command not found: %s\n", argv[0]);
+    ft_fprintf(2, "minishell: %s: command not found\n", argv[0]);
 }
 
 void    execute_command(t_command *cmd)
@@ -175,8 +180,10 @@ void    execute_commands()
         if ((ret = is_command(argv[0])))
         {
             treat_cmd(argv, ret);
+            free(argv);
             return ;
         }
+        free(argv);
 
         if (fork() == 0) {
             // ft_putendl_fd("FORK", 1);

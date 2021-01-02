@@ -13,21 +13,23 @@
 NAME=minishell
 
 SRC = srcs/minishell.c srcs/ft_sh_split.c srcs/handle_cmd.c srcs/handle_sig.c \
-	srcs/redirect.c srcs/handle_exec.c srcs/exec/ft_cd.c srcs/exec/ft_echo.c \
+	srcs/redirect.c srcs/handle_exec.c srcs/env_var.c srcs/exec/ft_cd.c srcs/exec/ft_echo.c \
 	srcs/exec/ft_export.c srcs/exec/ft_pwd.c srcs/exec/ft_unset.c \
 	srcs/exec/ft_env.c srcs/exec/ft_exit.c
 SRC += gnl/get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 
-FLAGS=-Wall -Wextra -Werror -fsanitize=address -g
+FLAGS=-Wall -Wextra -Werror -g3 #-fsanitize=address
 
 all: $(NAME)
 
+CC=clang
+
 $(NAME):
-	@make -C libft bonus
-	@make -C ft_printf all
-	@gcc $(FLAGS) $(SRC) libft/libft.a ft_printf/libftprintf.a -Iincludes -o $(NAME)
+	@make CC=$(CC) -C libft bonus
+	@make CC=$(CC) -C ft_printf all
+	@$(CC) $(FLAGS) $(SRC) ft_printf/libftprintf.a libft/libft.a -Iincludes -o $(NAME)
 
 clean:
 	@make -C libft clean
