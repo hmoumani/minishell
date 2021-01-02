@@ -161,45 +161,45 @@ int ft_ptr_str_len(char **ptr)
     return (i);
 }
 
-void export_name(char **argv)
+void export_name(char **argv, int i)
 {
-    if (lstchr(g_env.env_head, argv[1]))
+    if (lstchr(g_env.env_head, argv[i]))
         return ;
-    ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[1])));
+    ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[i])));
 }
 
-void export_empty_string(char **argv, char **sp)
+void export_empty_string(char **argv, char **sp, int i)
 {
     t_list *node;
     char *pfree;
 
-    if ((node = lstchr(g_env.env_head, argv[1])))
+    if ((node = lstchr(g_env.env_head, argv[i])))
     {
         pfree = node->content;
-        node->content = ft_strjoin(argv[1], "");
+        node->content = ft_strjoin(argv[i], "");
         free(pfree);
     }
     else
     {
-        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strjoin(argv[1], "")));
+        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strjoin(argv[i], "")));
     }
     sp = NULL;
 }
 
-void export_normal(char **argv, char **sp)
+void export_normal(char **argv, char **sp, int i)
 {
     t_list *node;
     char *pfree;
 
-    if ((node = lstchr(g_env.env_head, argv[1])))
+    if ((node = lstchr(g_env.env_head, argv[i])))
     {
         pfree = node->content;
-        node->content = ft_strdup(argv[1]);
+        node->content = ft_strdup(argv[i]);
         free(pfree);
     }
     else
     {
-        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[1])));
+        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[i])));
     }
     sp = NULL;
 }
@@ -207,18 +207,26 @@ void export_normal(char **argv, char **sp)
 void export_all(char **argv)
 {
     char **sp;
+    int i;
 
-    sp = ft_split(argv[1], '=');
-    if (!is_valid_identifier(sp[0]))
+    i = 1;
+    while (argv[i])
     {
-        ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", argv[1]);
+        sp = ft_split(argv[i], '=');
+        if (!is_valid_identifier(sp[0]))
+        {
+            ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", argv[i]);
+            i++;
+            continue ;
+        }
+        if (ft_ptr_str_len(sp) == 1 && !ft_strchr(argv[i], '=')) //export ll
+            export_name(argv, i);
+        else if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[i], '=')) // export ll=
+            export_empty_string(argv, sp, i);
+        else                                                           //export ll=normal
+            export_normal(argv, sp, i);
+        i++;
     }
-    if (ft_ptr_str_len(sp) == 1 && !ft_strchr(argv[1], '=')) //export ll
-        export_name(argv);
-    else if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[1], '=')) // export ll=
-        export_empty_string(argv, sp);
-    else                                                           //export ll=normal
-        export_normal(argv, sp);
     // if (!sp)
     //     export_name(argv);
     // if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[1], '='))
