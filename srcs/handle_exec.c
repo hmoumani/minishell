@@ -85,7 +85,7 @@ void treat_cmd(char **argv, int cmd_id)
     else if (cmd_id == 6)
         ft_env(argv);
     else if (cmd_id == 7)
-        ft_exit_buildin(argv);
+        ft_exit_builtin(argv);
 }
 
 int ft_try_path(char **argv)

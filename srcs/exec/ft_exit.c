@@ -12,10 +12,36 @@
 
 #include "../../includes/minishell.h"
 
-void ft_exit_buildin(char **argv)
+int ft_isnumber(char *s)
 {
+    int i;
+
+    i = 0;
+    while (s[i])
+    {
+        if (!ft_isdigit(s[i]))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+void ft_exit_builtin(char **argv)
+{
+    int ret;
+
     if (!argv[1])
         exit(0);
-    // TODO: needs some magic here, 200 is randmoly picked
-    exit(200);
+    if (ft_ptr_str_len(argv) > 2)
+    {
+        ft_fprintf(2, "bash: exit: too many arguments\n");
+        return ;
+    }
+    if (!ft_isnumber(argv[1]))
+    {
+        ft_fprintf(2, "bash: exit: %s: numeric argument required\n", argv[1]);
+        exit(255);
+    }
+    ret = ft_atoi(argv[1]);
+    exit(ret >= 0 && ret <= 255 ? ret : 0);
 }

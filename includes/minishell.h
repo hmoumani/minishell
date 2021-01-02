@@ -112,7 +112,8 @@ void    	ft_export(char **argv);
 void		export_all(char **argv);
 void 		ft_unset(char **argv);
 void 		ft_env(char **argv);
-void 		ft_exit_buildin(char **argv);
+void		ft_exit_builtin(char **argv);
+int			ft_ptr_str_len(char **ptr);
 
 
 
