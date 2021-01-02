@@ -102,49 +102,6 @@ void show_all_export(char *start_with)
 
 void    ft_export(char **argv)
 {
-    // t_list *temp;
-    // char **sp;
-    // char *pfree;
-
-    // sp = ft_split(argv[1], '=');
-    // /*
-    //     if (!sp)
-    //         export have another behaviour if it's called only "export"
-    //         SEGV
-    //     don't forget: export ll=fef=fef
-    // */
-    // if (argv[1] == NULL)
-    // {
-    //     show_all_export("declare -x ");
-    //     return ;
-    // }
-    // /* check it again */
-    // if (!is_valid_identifier(sp[0]))
-    // {
-    //     ft_fprintf(2, "export: `%s': not a valid identifier\n", argv[1]);
-    //     return ;
-    // }
-    // // ft_fprintf(2, "%p\n", sp[0]);
-    // temp = lstchr(g_env.env_head, sp[0]);
-    // if (temp)
-    // {
-    //     pfree = temp->content;
-    //     temp->content = ft_strdup(argv[1]);
-    //     free(pfree);
-    // }
-    // else
-    // {
-    //     ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[1])));
-    // }
-    // temp = lstchr(g_env.env_head, sp[0]);
-    // if (temp)
-    // {
-    //     ft_putstr_fd(temp->content, 2);
-    // }
-    // else
-    // {
-    //     ft_putstr_fd("!exist\n", 2);
-    // }
     if (!argv[1])
         show_all_export("declare -x ");
     else

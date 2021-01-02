@@ -20,8 +20,11 @@ void ft_env(char **argv)
     argv = NULL;
     while (curr)
     {
-        ft_putstr_fd(curr->content, 1);
-        ft_putstr_fd("\n", 1);
+        if (ft_strchr(curr->content, '='))
+        {
+            ft_putstr_fd(curr->content, 1);
+            ft_putstr_fd("\n", 1);
+        }
         curr = curr->next;
     }
 }

@@ -31,17 +31,23 @@ void ft_exit_builtin(char **argv)
     int ret;
 
     if (!argv[1])
+    {
+        ft_fprintf(2, "exit\n"); 
         exit(0);
+    }
     if (ft_ptr_str_len(argv) > 2)
     {
+        ft_fprintf(2, "exit\n");
         ft_fprintf(2, "bash: exit: too many arguments\n");
         return ;
     }
     if (!ft_isnumber(argv[1]))
     {
+        ft_fprintf(2, "exit\n"); 
         ft_fprintf(2, "bash: exit: %s: numeric argument required\n", argv[1]);
         exit(255);
     }
     ret = ft_atoi(argv[1]);
+    ft_fprintf(2, "exit\n");
     exit(ret >= 0 && ret <= 255 ? ret : 0);
 }

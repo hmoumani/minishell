@@ -173,7 +173,7 @@ int     get_command_line(char **line)
 char *get_path()
 {
     t_list *curr;
-    /* TODO: you need to update the env_head to check for updates */
+    
     curr = g_env.env_head;
     while (curr)
         {
@@ -192,7 +192,7 @@ char *get_home()
 
     curr = g_env.env_head;
     while (curr)
-        {
+    {
         if (!strncmp(curr->content, "HOME", 4))
         {
             return (curr->content + 5);

@@ -114,6 +114,7 @@ void 		ft_unset(char **argv);
 void 		ft_env(char **argv);
 void		ft_exit_builtin(char **argv);
 int			ft_ptr_str_len(char **ptr);
+char		*get_path();
 
 
 
