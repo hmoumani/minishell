@@ -22,8 +22,10 @@ void ft_echo(char **argv)
         return ;
     }
     i = 1;
-    if (!strcmp(argv[1], "-n"))
-        i = 2;
+    while (!strcmp(argv[i], "-n"))
+    {
+        i++;
+    }
     while (argv[i])
     {
         ft_putstr_fd(argv[i], 1);
