@@ -43,10 +43,9 @@ int    ft_handle_cmd(char *str)
 
     len = ft_word_length(str, SEP);
     str = ft_substr(str, 0, len);
-    arg = ft_convert_env(str);
-    free(str);
-    str = arg;
-    arg = ft_quotes_convert(arg);
+    // arg = ft_convert_env(str);
+    // str = arg;
+    arg = ft_quotes_convert(str);
     free(str);
     if (ft_strequ(g_minishell.read_next, INPUT_RED))
         ft_handle_input_red(arg);
@@ -114,6 +113,7 @@ int    ft_handle_output_red(char *str, char *app)
     if (ft_strequ(g_minishell.read_next, OUTPUT_RED))
     {
         t_list *tmp;
+        // ft_fprintf(2, "OUT:%s\n", str);
         ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->outFiles, (tmp = ft_lstnew(str)));
         g_minishell.read_next = NULL;
 

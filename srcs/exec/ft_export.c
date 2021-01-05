@@ -17,7 +17,7 @@ int is_valid_identifier(char *s)
     int i;
 
     i = 0;
-    if (!ft_isalpha(s[0]) && s[0] != '_')
+    if (!s || (!ft_isalpha(s[0]) && s[0] != '_'))
         return (0);
     while (s[i])
     {
@@ -143,22 +143,33 @@ void export_empty_string(char **argv, char **sp, int i)
     sp = NULL;
 }
 
-void export_normal(char **argv, char **sp, int i)
+void export_normal(char *string)
 {
     t_list *node;
     char *pfree;
 
-    if ((node = lstchr(g_env.env_head, argv[i])))
+    if ((node = lstchr(g_env.env_head, string)))
     {
         pfree = node->content;
-        node->content = ft_strdup(argv[i]);
+        node->content = ft_strdup(string);
         free(pfree);
     }
     else
     {
-        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[i])));
+        ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(string)));
     }
-    sp = NULL;
+}
+
+void add_element(char *key, char *value)
+{
+    char *pfree;
+    char *holder;
+
+    holder = ft_strjoin(key, "=");
+    pfree = holder;
+    holder = ft_strjoin(holder, value);
+    free(pfree);
+    export_normal(holder);
 }
 
 void export_all(char **argv)
@@ -170,8 +181,11 @@ void export_all(char **argv)
     while (argv[i])
     {
         sp = ft_split(argv[i], '=');
-        if (!is_valid_identifier(sp[0]))
+        // ft_fprintf(2, "%p ||| %p\n", argv[i], ft_strchr(argv[i], '='));
+        // ft_fprintf(2, "%p\n", sp[0]);
+        if (!is_valid_identifier(sp[0]) || argv[i][0] == '=')
         {
+            g_minishell.return_code = 1;
             ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", argv[i]);
             i++;
             continue ;
@@ -181,7 +195,7 @@ void export_all(char **argv)
         else if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[i], '=')) // export ll=
             export_empty_string(argv, sp, i);
         else                                                           //export ll=normal
-            export_normal(argv, sp, i);
+            export_normal(argv[i]);
         i++;
     }
     // if (!sp)

@@ -40,8 +40,10 @@ t_command   *ft_new_command(int in, int out)
 void    show_prompt(char *type)
 {
     if (!type) {
-        ft_fprintf(1, BBLU "minishell %d%s> "RESET, g_minishell.return_code,
+        ft_fprintf(1, "", g_minishell.return_code,
                 g_minishell.return_code ? BRED : BGRN);
+        // ft_fprintf(1, BBLU "minishell %d%s> "RESET, g_minishell.return_code,
+        //         g_minishell.return_code ? BRED : BGRN);
     } else if (ft_strequ(type, PIPE)) {
         ft_fprintf(1, "pipe > ");
     }
@@ -108,7 +110,7 @@ int    ft_precess_cmd(char *str)
     cmd = g_minishell.cmd_tail->content;
     // ft_fprintf(1, "%s\n", str);
     if (((ft_strncmp(str, OUTPUT_RED, 1) == 0 || ft_strncmp(str, APP_OUTPUT_RED, 2) == 0 
-        || ft_strncmp(str, INPUT_RED, 1) == 0) && (g_minishell.read_next != NULL && ft_strequ(g_minishell.read_next, PIPE))) ||
+        || ft_strncmp(str, INPUT_RED, 1) == 0) && (g_minishell.read_next != NULL && !ft_strequ(g_minishell.read_next, PIPE))) ||
         ((ft_strncmp(str, PIPE, 1) == 0 || ft_strncmp(str, SEMI_COLUMN, 1) == 0) && 
         (g_minishell.read_next != NULL || cmd->argv == NULL)))
         return ft_syntax_error(str);
@@ -173,7 +175,7 @@ int     get_command_line(char **line)
 char *get_path()
 {
     t_list *curr;
-    
+    /* TODO: you need to update the env_head to check for updates */
     curr = g_env.env_head;
     while (curr)
         {
@@ -186,16 +188,16 @@ char *get_path()
     return (NULL);
 }
 
-char *get_home()
+char *get_from_env(char *s)
         {
     t_list *curr;
 
     curr = g_env.env_head;
     while (curr)
-    {
-        if (!strncmp(curr->content, "HOME", 4))
         {
-            return (curr->content + 5);
+        if (!strncmp(curr->content, s, ft_strlen(s)))
+        {
+            return (curr->content + ft_strlen(s) + 1);
         }
         curr = curr ->next;
     }
@@ -229,6 +231,9 @@ int     main(int argc, char **argv, char **env)
             // g_minishell.command_line = get_command_line();
             get_command_line(&g_minishell.command_line);
         }
+        char *tmp = g_minishell.command_line;
+        g_minishell.command_line = ft_convert_env(tmp);
+        free(tmp);
         // get_next_line(0, &g_minishell.command_line);
         // if (r == 0 && !g_minishell.command_line)
             // ft_exit();

@@ -28,8 +28,8 @@ int		ft_is_backslashed(const char *str, int i)
 
 int		ft_is_quoted(const char *str, int i)
 {
-	int quote[2];
-	int j;
+	char	quote[2];
+	int 	j;
 
 	ft_bzero(quote, 2);
 	j = 0;
@@ -42,7 +42,7 @@ int		ft_is_quoted(const char *str, int i)
 			quote[0] = 0;
 		j++;
 	}
-	return (quote[0] == '\'');
+	return (quote[0] == '\'' && str[i] != '\'');
 }
 
 int	ft_on_char(const char *str, int i, char *c)
@@ -98,7 +98,7 @@ char	*ft_quotes_convert(char *str)
 			i++;
 			continue;
 		}
-		if ((!quote[0] && ft_on_char(str, i, "'\"")) || ft_on_char(str, i, quote))
+		if ((!quote[0] && ft_on_char(str, i, "'\"")) || (quote[0] == '\'' && str[i] == '\'') || ft_on_char(str, i, quote))
 		{
 			quote[0] = quote[0] ? 0 : str[i];
         } else {
@@ -164,6 +164,19 @@ int	ft_word_length(const char *s, char *c)
 		i++;
 	}
 	return (i);
+}
+
+void	ft_free_split(char **split)
+{
+	size_t	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
 static char	**ft_free(char **ptr, size_t size)

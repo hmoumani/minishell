@@ -14,23 +14,27 @@
 
 void ft_cd(char **argv)
 {
-    // char *s1;
-    int ret;
+    DIR		*pdir;
+    // char *pfree;
+	char	*to_directory;
+	char	*current_directory;
 
-    g_env.home = get_home();
-    if (argv[1])
-        ret = chdir(argv[1]);
-    else
-    {
-        ret = chdir(g_env.home);
-    }
-    if (ret < 0)
-    {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd("cd: ", 2);
-        ft_putstr_fd(argv[1], 2);
-        ft_putstr_fd(": ", 2);
-        ft_putstr_fd(strerror(errno), 2);
-        ft_putstr_fd("\n", 2);
-    }
+	to_directory = !argv[1] ? get_from_env("HOME") : argv[1];
+	pdir = opendir(to_directory);
+	if (pdir != NULL)
+	{
+        add_element("OLDPWD", ft_strdup(get_from_env("PWD")));
+		chdir(to_directory);
+		current_directory = getcwd(NULL, 0);
+        
+		if (current_directory == NULL)
+        {
+            add_element("PWD", ft_strjoin(get_from_env("PWD"), "/."));
+			ft_fprintf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
+        }
+		else
+			add_element("PWD", current_directory);
+	}
+	if (pdir)
+		closedir(pdir);
 }

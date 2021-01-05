@@ -1,0 +1,34 @@
+dasdadasdas
+as
+das
+das
+das
+da
+dsadasdas
+static buffer
+static size 
+if (size > 0) 
+	if '\n' in buffer:
+		realloc(...)
+		copy
+		return
+	else
+		realloc
+		copy
+else
+	goto read
+                      
+                      
+
+read:
+	if (eof) 
+		if size > 0
+			return (line)
+		else
+			malloc(1)
+			line[0] = 0
+			return (0)
+	goto start:
+	}
+                      
+                      

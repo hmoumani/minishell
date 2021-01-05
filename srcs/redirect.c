@@ -76,7 +76,7 @@ void    open_aout_file(void  *f, void *c)
         cmd->outRed = fd;
 }
 
-void ft_free(void *ptr)
+static void ft_free(void *ptr)
 {
     // ft_fprintf(1, "%p %s\n", ptr, ptr);
     free(ptr);

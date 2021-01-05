@@ -184,36 +184,41 @@ void    execute_commands()
         if ((ret = is_command(argv[0])))
         {
             open_redirect_files(cmd);
+            int in;
+            int out;
+            in = dup(0);
+            out = dup(1);
             dup2(cmd->inRed, 0);
             dup2(cmd->outRed, 1);
             treat_cmd(argv, ret);
+            dup2(in, 0);
+            dup2(out, 1);
             free(argv);
-            return ;
+        } else {
+            free(argv);
+            if (fork() == 0) {
+                // ft_putendl_fd("FORK", 1);
+                signal(SIGINT, SIG_DFL);
+                // print_command(cmd);
+                execute_command(lst->content);
+            }
+            else
+            {
+                free_redirect_files();
+                g_minishell.forked = 1;
+                wait(&ret);
+                // char *s = (char *)&ret;
+                // ft_fprintf(1, "%d %d %d %d\n", s[0], s[1], s[2], s[3]);
+                if (WIFEXITED(ret))
+                    g_minishell.return_code = WEXITSTATUS(ret);
+                if (cmd->inRed != 0)
+                    close(cmd->inRed);
+                if (cmd->outRed != 1)
+                    close(cmd->outRed);
+                g_minishell.forked = 0;
+            }
         }
-        free(argv);
-
-        if (fork() == 0) {
-            // ft_putendl_fd("FORK", 1);
-            signal(SIGINT, SIG_DFL);
-            // print_command(cmd);
-            execute_command(lst->content);
-        }
-        else
-        {
-            free_redirect_files();
-            g_minishell.forked = 1;
-            wait(&ret);
-            // char *s = (char *)&ret;
-            // ft_fprintf(1, "%d %d %d %d\n", s[0], s[1], s[2], s[3]);
-            if (WIFEXITED(ret))
-                g_minishell.return_code = WEXITSTATUS(ret);
-            if (cmd->inRed != 0)
-                close(cmd->inRed);
-            if (cmd->outRed != 1)
-                close(cmd->outRed);
-            g_minishell.forked = 0;
-        }
-		lst = lst->next;
-	}
+        lst = lst->next;
+    }
     // ft_lstiter(g_minishell.cmd_head, execute_command);
 }
