@@ -20,7 +20,8 @@ int  ft_cd(char **argv)
 	char	*current_directory;
 
 	to_directory = !argv[1] ? get_from_env("HOME") : argv[1];
-	pdir = opendir(to_directory);
+	if (!(pdir = opendir(to_directory)))
+		return (1);
 	if (pdir != NULL)
 	{
         add_element("OLDPWD", ft_strdup(get_from_env("PWD")));
@@ -35,7 +36,6 @@ int  ft_cd(char **argv)
 		else
 		{
 			add_element("PWD", current_directory);
-			return (1);
 		}
 	}
 	if (pdir)
