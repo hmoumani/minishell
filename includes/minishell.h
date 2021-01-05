@@ -117,7 +117,7 @@ void 		ft_env(char **argv);
 int			ft_exit_builtin(char **argv);
 int			ft_ptr_str_len(char **ptr);
 char		*get_path();
-
+int			ft_custom_atoi(const char *str, int i, int *error);
 
 
 // char	**ft_free(char **ptr, size_t size);
