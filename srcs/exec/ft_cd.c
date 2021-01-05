@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void ft_cd(char **argv)
+int  ft_cd(char **argv)
 {
     DIR		*pdir;
     // char *pfree;
@@ -33,8 +33,12 @@ void ft_cd(char **argv)
 			ft_fprintf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
         }
 		else
+		{
 			add_element("PWD", current_directory);
+			return (1);
+		}
 	}
 	if (pdir)
 		closedir(pdir);
+	return (0);
 }

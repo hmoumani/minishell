@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void ft_exit() {
     ft_putendl_fd("exit", 1);
@@ -265,5 +265,5 @@ int     main(int argc, char **argv, char **env)
         free(g_minishell.command_line);
         g_minishell.command_line = NULL;
     }
-    return (EXIT_SUCCESS);
+    return (g_minishell.return_code);
 }

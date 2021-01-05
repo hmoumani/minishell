@@ -107,14 +107,14 @@ char 		*get_from_env(char *s);
 t_list 		*lstchr(t_list *head, char *s);
 void 		ft_echo(char **argv);
 void 		ft_pwd(char **argv);
-void 		ft_cd(char **argv);
+int	 		ft_cd(char **argv);
 void    	ft_export(char **argv);
 void		export_all(char **argv);
 void		export_normal(char *string);
 void 		ft_unset(char **argv);
 void 		add_element(char *key, char *value);
 void 		ft_env(char **argv);
-void		ft_exit_builtin(char **argv);
+int			ft_exit_builtin(char **argv);
 int			ft_ptr_str_len(char **ptr);
 char		*get_path();
 

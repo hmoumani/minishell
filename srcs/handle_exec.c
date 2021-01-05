@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 
 char    **ft_lst_to_array(t_list    *lst)
@@ -70,12 +70,12 @@ int is_command(char *s)
 
 
 
-void treat_cmd(char **argv, int cmd_id)
+int treat_cmd(char **argv, int cmd_id)
 {
     if (cmd_id == 1)
         ft_echo(argv);
     else if (cmd_id == 2)
-        ft_cd(argv);
+        return(ft_cd(argv));
     else if (cmd_id == 3)
         ft_pwd(argv);
     else if (cmd_id == 4)
@@ -85,7 +85,8 @@ void treat_cmd(char **argv, int cmd_id)
     else if (cmd_id == 6)
         ft_env(argv);
     else if (cmd_id == 7)
-        ft_exit_builtin(argv);
+        return(ft_exit_builtin(argv));
+    return (0);
 }
 
 int ft_try_path(char **argv)
@@ -123,14 +124,9 @@ int ft_try_path(char **argv)
 
 void ft_redirect(char **argv)
 {
-    int cmd_id;
-    char **env_args = ft_lst_to_array(g_env.env_head);
+  char **env_args = ft_lst_to_array(g_env.env_head);
     struct stat sb;
-    if ((cmd_id = is_command(argv[0])))
-    {
-        treat_cmd(argv, cmd_id);
-        return ;
-    }
+
     if (stat(argv[0], &sb) == 0 && sb.st_mode & S_IXUSR)
     {
         execve(argv[0], argv, env_args);
@@ -190,7 +186,7 @@ void    execute_commands()
             out = dup(1);
             dup2(cmd->inRed, 0);
             dup2(cmd->outRed, 1);
-            treat_cmd(argv, ret);
+            g_minishell.return_code = treat_cmd(argv, ret);
             dup2(in, 0);
             dup2(out, 1);
             free(argv);
