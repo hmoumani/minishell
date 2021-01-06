@@ -179,7 +179,7 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
-static char	**ft_free(char **ptr, size_t size)
+static char	**ft_free_split_size(char **ptr, size_t size)
 {
 	size_t	i;
 
@@ -211,7 +211,7 @@ char		**ft_sh_split(char const *s, char *c)
 		if (ft_on_char(s, i, c) == 0)
 		{
 			if (!(split[j] = malloc(ft_word_length(&s[i], c) + 1)))
-				return (ft_free(split, wc + 1));
+				return (ft_free_split_size(split, wc + 1));
 			ft_strlcpy(split[j++], &s[i], ft_word_length(&s[i], c) + 1);
 			i += ft_word_length(&s[i], c) + 1;
 		}

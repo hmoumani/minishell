@@ -22,7 +22,8 @@ int is_valid_identifier(char *s)
     while (s[i])
     {
         if (!ft_isalpha(s[i]) && s[i] != '_' && !ft_isdigit(s[i]))
-            return (0);
+			if (!(s[i] == '+' && !s[i + 1]))
+            	return (0);
         i++;
     }
     return (1);
@@ -34,7 +35,11 @@ int custem_len(char *s)
 
     i = 0;
     while (s[i] && s[i] != '=')
+	{
+		if (s[i] == '+' && s[i + 1] == '=')
+			return (i);
         i++;
+	}
     return (i);
 }
 
@@ -86,26 +91,29 @@ void show_all_export(char *start_with)
     t_list *curr;
 
     curr = g_env.env_head;
+	start_with = NULL;
     while (curr)
     {
+		ft_fprintf(2, "%s\n", curr->content);
         if (!strncmp(curr->content, "_=", 2))
         {
             curr = curr->next;
             continue ;
         }
-        ft_putstr_fd(start_with, 1);
-        ft_print_path(curr->content);
-        ft_putstr_fd("\n", 1);
+        // ft_putstr_fd(start_with, 1);
+        // ft_print_path(curr->content);
+        // ft_putstr_fd("\n", 1);
         curr = curr->next;
     }
 }
 
-void    ft_export(char **argv)
+int    ft_export(char **argv)
 {
     if (!argv[1])
         show_all_export("declare -x ");
     else
-        export_all(argv);
+        return(export_all(argv));
+    return (0);
 }
 
 int ft_ptr_str_len(char **ptr)
@@ -118,11 +126,11 @@ int ft_ptr_str_len(char **ptr)
     return (i);
 }
 
-void export_name(char **argv, int i)
+void export_name(char *argv)
 {
-    if (lstchr(g_env.env_head, argv[i]))
+    if (lstchr(g_env.env_head, argv))
         return ;
-    ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv[i])));
+    ft_lstadd_back(&g_env.env_head, ft_lstnew(ft_strdup(argv)));
 }
 
 void export_empty_string(char **argv, char **sp, int i)
@@ -160,6 +168,7 @@ void export_normal(char *string)
     }
 }
 
+
 void add_element(char *key, char *value)
 {
     char *pfree;
@@ -167,16 +176,49 @@ void add_element(char *key, char *value)
 
     holder = ft_strjoin(key, "=");
     pfree = holder;
-    holder = ft_strjoin(holder, value);
-    free(pfree);
+	if (value)
+	{
+    	holder = ft_strjoin(holder, value);
+    	free(pfree);
+	}
     export_normal(holder);
 }
 
-void export_all(char **argv)
+void export_append(char *string, char **sp, int len)
+{
+	*ft_strchr(sp[0], '+') = 0;
+	ft_fprintf(2, "%s\n", sp[1]);
+    t_list *node;
+	char **tmp;
+    // char *pfree;
+
+	tmp = NULL;
+    if ((node = lstchr(g_env.env_head, string))) // variable exist
+    {
+		if (len == 1)							// export ll+=
+			export_name(sp[0]);
+		else									// export ll+=test
+		{
+			tmp = ft_split(node->content, '=');
+			if (ft_ptr_str_len(tmp) == 1)		// variable exist with empty value ex: ll
+				add_element(sp[0], sp[1]);
+			else if (ft_ptr_str_len(tmp) == 2)	// variable exist with  value ex: ll=test
+				add_element(sp[0], ft_strjoin(tmp[1], sp[1]));
+		}
+    }
+    else
+    {
+        add_element(sp[0], sp[1]);
+    }
+}
+
+int  export_all(char **argv)
 {
     char **sp;
     int i;
+    int ret;
 
+    ret = 0;
     i = 1;
     while (argv[i])
     {
@@ -188,18 +230,19 @@ void export_all(char **argv)
             g_minishell.return_code = 1;
             ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", argv[i]);
             i++;
+            ret = 1;
             continue ;
         }
-        if (ft_ptr_str_len(sp) == 1 && !ft_strchr(argv[i], '=')) //export ll
-            export_name(argv, i);
-        else if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[i], '=')) // export ll=
+        if (ft_ptr_str_len(sp) == 1 && !ft_strchr(argv[i], '='))				//export ll
+            export_name(argv[i]);
+		else if (sp[0][ft_strlen(sp[0]) - 1] == '+' && ft_strchr(argv[i], '='))	// export +=...
+			export_append(argv[i], sp, ft_ptr_str_len(sp));
+        else if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[i], '=')) 			// export ll=
             export_empty_string(argv, sp, i);
-        else                                                           //export ll=normal
+        else                                                           			//export ll=normal
             export_normal(argv[i]);
+        ft_free_split(sp);
         i++;
     }
-    // if (!sp)
-    //     export_name(argv);
-    // if (ft_ptr_str_len(sp) == 1 && ft_strchr(argv[1], '='))
-    //     export_empty_string(argv);
+    return (ret);
 }

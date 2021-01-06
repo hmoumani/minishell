@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char    *env_sep = "'\"$\\?" SEP;
+char    *env_sep = "'\"$\\?=" SEP;
 
 char    *ft_get_var(char *name)
 {

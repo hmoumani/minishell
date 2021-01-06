@@ -5,14 +5,12 @@
 
 int main(int argc, char **argv, char **env) {
 	
-	char **tmp = ft_split("ll=wefwe", '=');
-	int i = 0;
-
-	while (tmp[i])
+	int b = 0;
+	write(2, "START\n", 6);
+	while (b < 1000000000)
 	{
-		printf("%s\n", tmp[i]);
-		i++;
+		b++;
 	}
-
-	return (4);
+	write(1, "FINISH\n", 7);
+	return (5);
 }

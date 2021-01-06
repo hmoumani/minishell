@@ -51,14 +51,15 @@ int    ft_handle_cmd(char *str)
         ft_handle_input_red(arg);
     else if (ft_strequ(g_minishell.read_next, OUTPUT_RED) || ft_strequ(g_minishell.read_next, APP_OUTPUT_RED))
         ft_handle_output_red(arg, g_minishell.read_next);
-    else if (arg[0]) {
+    else if (arg) {
         // ft_putstr_fd("CMD:", 1);
         cmd = g_minishell.cmd_tail->content;
         // ft_fprintf(1, "CMD %s %d\n", arg, cmd->inRed);
         ft_lstadd_back(&cmd->argv, ft_lstnew(arg));
         // ft_putendl_fd(arg, 1);
-    } else if (!arg[0])
-        free(arg);
+    }
+    // if (arg)
+        // free(arg);
     g_minishell.read_next = NULL;
     return (0);
 }
@@ -72,9 +73,12 @@ int    ft_handle_pipe(char *str)
     cmd = g_minishell.cmd_tail->content;
     if (pipe(p) < 0)
         ft_error("pipe error");
+
     cmd->outRed = p[1];
+    cmd->pipe[0] = p[0];
+    // ft_fprintf(2, "PIPE %d %d\n", p[0], p[1]);
     // ft_fprintf(1, "PIPE %d\n", p[0]);
-    g_minishell.cmd_tail = ft_lstnew(ft_new_command(p[0], 1));
+    g_minishell.cmd_tail = ft_lstnew(ft_new_command(p[0], 1, p[1]));
     ft_lstadd_back(&g_minishell.cmd_head, g_minishell.cmd_tail);
     str = NULL;
     g_minishell.read_next = PIPE;
@@ -82,11 +86,21 @@ int    ft_handle_pipe(char *str)
     return (0);
 }
 
+static t_red_file   *ft_red_file(char *file, char type)
+{
+    t_red_file  *red_file;
+
+    red_file = malloc(sizeof(t_red_file));
+    red_file->file = file;
+    red_file->type = type;
+    return (red_file);
+}
+
 int    ft_handle_semi_column(char *str)
 {
     t_command   *cmd;
     cmd = g_minishell.cmd_tail->content;
-    g_minishell.cmd_tail = ft_lstnew(ft_new_command(0, 1));
+    g_minishell.cmd_tail = ft_lstnew(ft_new_command(0, 1, -1));
     ft_lstadd_back(&g_minishell.cmd_head, g_minishell.cmd_tail);
 
     str = NULL;
@@ -99,7 +113,7 @@ int    ft_handle_input_red(char *str)
 {
     if (ft_strequ(g_minishell.read_next, INPUT_RED))
     {
-        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->inFiles, ft_lstnew(str));
+        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->redFiles, ft_lstnew(ft_red_file(str, 0)));
         g_minishell.read_next = NULL;
     } else {
         g_minishell.read_next = INPUT_RED;
@@ -112,13 +126,14 @@ int    ft_handle_output_red(char *str, char *app)
 {
     if (ft_strequ(g_minishell.read_next, OUTPUT_RED))
     {
-        t_list *tmp;
-        // ft_fprintf(2, "OUT:%s\n", str);
-        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->outFiles, (tmp = ft_lstnew(str)));
+        // t_list *tmp;`
+        // t_command *cmd = ((t_command *)g_minishell.cmd_tail->content);
+        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->redFiles, ft_lstnew(ft_red_file(str, 1)));
+
         g_minishell.read_next = NULL;
 
     } else if (ft_strequ(g_minishell.read_next, APP_OUTPUT_RED)) {
-        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->aoutFiles, ft_lstnew(str));
+        ft_lstadd_back(&((t_command *)g_minishell.cmd_tail->content)->redFiles, ft_lstnew(ft_red_file(str, 2)));
         g_minishell.read_next = NULL;
     } else {
         if (ft_strequ(app, APP_OUTPUT_RED)) {

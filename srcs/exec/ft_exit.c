@@ -28,7 +28,7 @@ int ft_isnumber(char *s)
     return (1);
 }
 
-int  ft_exit_builtin(char **argv)
+int  ft_exit(char **argv)
 {
     int ret;
     int error;

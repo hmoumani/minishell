@@ -35,61 +35,54 @@ int     open_file(char *file, int flags, char *type)
     return fd;
 }
 
-void    open_input_file(void  *f, void *c)
+void    open_red_file(void *f, void *c)
 {
     int         fd;
-    char        *file;
+    t_red_file  *red_file;
     t_command   *cmd;
 
-    file = f;
+    red_file = f;
     cmd = c;
 
-    fd = open_file(file, O_RDONLY, INPUT_RED);
-    if (fd != -1)
-        cmd->inRed = fd;
-    
+    if (red_file->type == 0)
+    {
+        fd = open_file(red_file->file, O_RDONLY, INPUT_RED);
+        if (fd != -1)
+            cmd->inRed = fd;
+    }
+    else if (red_file->type == 1)
+    {
+        fd = open_file(red_file->file, O_WRONLY | O_CREAT | O_TRUNC, OUTPUT_RED);
+        if (fd != -1)
+            cmd->outRed = fd;
+    }
+    else if (red_file->type == 2)
+    {
+        fd = open_file(red_file->file, O_WRONLY | O_CREAT | O_APPEND, APP_OUTPUT_RED);
+        if (fd != -1)
+            cmd->outRed = fd;
+    }
+
 }
 
-void    open_out_file(void  *f, void *c)
-{
-    int         fd;
-    char        *file;
-    t_command   *cmd;
-
-    file = f;
-    cmd = c;
-    fd = open_file(file, O_WRONLY | O_CREAT | O_TRUNC, OUTPUT_RED);
-    if (fd != -1)
-        cmd->outRed = fd;
-}
-
-void    open_aout_file(void  *f, void *c)
-{
-    int         fd;
-    char        *file;
-    t_command   *cmd;
-
-    file = f;
-    cmd = c;
-    fd = open_file(file, O_WRONLY | O_CREAT | O_APPEND, APP_OUTPUT_RED);
-    if (fd != -1)
-        cmd->outRed = fd;
-}
-
-static void ft_free(void *ptr)
+void ft_free(void *ptr)
 {
     // ft_fprintf(1, "%p %s\n", ptr, ptr);
     free(ptr);
 }
+
+static void ft_free_red_file(void *ptr)
+{
+    t_red_file  *red_file;
+
+    red_file = ptr;
+    free(red_file->file);
+    free(red_file);
+}
+
 void    open_redirect_files(t_command *cmd)
 {
-
-    ft_lstiter(cmd->inFiles, open_input_file, cmd);
-    ft_lstiter(cmd->outFiles, open_out_file, cmd);
-    ft_lstiter(cmd->aoutFiles, open_aout_file, cmd);
-    // ft_lstclear(&(cmd->inFiles), ft_free);
-    // ft_lstclear(&(cmd->outFiles), ft_free);
-    // ft_lstclear(&(cmd->aoutFiles), ft_free);
+    ft_lstiter(cmd->redFiles, open_red_file, cmd);
 }
 
 void    free_files(void *c, void *param)
@@ -98,9 +91,7 @@ void    free_files(void *c, void *param)
 
     cmd = c;
     param = NULL;
-    ft_lstclear(&cmd->inFiles, ft_free);
-    ft_lstclear(&cmd->outFiles, ft_free);
-    ft_lstclear(&cmd->aoutFiles, ft_free);
+    ft_lstclear(&cmd->redFiles, ft_free_red_file);
 }
 
 void    free_redirect_files()

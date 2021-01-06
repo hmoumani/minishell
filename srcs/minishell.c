@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-void ft_exit() {
-    ft_putendl_fd("exit", 1);
-    exit(0);
-}
+// void ft_exit() {
+//     ft_putendl_fd("exit", 1);
+//     exit(0);
+// }
 
 void    ft_error(char *str)
 {
@@ -23,7 +23,7 @@ void    ft_error(char *str)
     exit(1);
 }
 
-t_command   *ft_new_command(int in, int out)
+t_command   *ft_new_command(int in, int out, int pipe)
 {
     t_command   *cmd;
 
@@ -31,21 +31,48 @@ t_command   *ft_new_command(int in, int out)
     cmd->argv = NULL;
     cmd->inRed = in;
     cmd->outRed = out;
-    cmd->inFiles = NULL;
-    cmd->outFiles = NULL;
-    cmd->aoutFiles = NULL;
+    // ft_fprintf(2, "IN %d OUT %d", in, out);
+    cmd->redFiles = NULL;
+    cmd->pipe[0] = -1;
+    cmd->pipe[1] = pipe;
     return (cmd);
+}
+
+char *ft_getcwd()
+{
+    char    *cwd;
+    char    *home;
+    char    *res;
+    int     len;
+
+    cwd = getcwd(NULL, 0);
+    home = ft_get_var("HOME");
+    len = ft_strlen(home);
+    res = "~";
+    if (len && ft_strncmp(home, cwd, len) == 0)
+    {
+        free(home);
+        home = ft_substr(cwd, len, ft_strlen(cwd) - len);
+        res = ft_strjoin(res, home);
+    }
+    else
+        res = getcwd(NULL, 0);
+    free(home);
+    free(cwd);
+    return (res);
 }
 
 void    show_prompt(char *type)
 {
+    char    *cwd;
+
     if (!type) {
-        ft_fprintf(1, "", g_minishell.return_code,
+        cwd = ft_getcwd();
+        ft_fprintf(2, BBLU "%s %d%s> "RESET, cwd, g_minishell.return_code,
                 g_minishell.return_code ? BRED : BGRN);
-        // ft_fprintf(1, BBLU "minishell %d%s> "RESET, g_minishell.return_code,
-        //         g_minishell.return_code ? BRED : BGRN);
+        free(cwd);
     } else if (ft_strequ(type, PIPE)) {
-        ft_fprintf(1, "pipe > ");
+        ft_fprintf(2, "pipe > ");
     }
 }
 
@@ -132,7 +159,7 @@ int    ft_precess_cmd(char *str)
 
 void    init()
 {
-    g_minishell.cmd_head = ft_lstnew(ft_new_command(0, 1));
+    g_minishell.cmd_head = ft_lstnew(ft_new_command(0, 1, -1));
     g_minishell.cmd_tail = g_minishell.cmd_head;
     g_minishell.stat = 1;
     g_minishell.forked = 0;
@@ -155,7 +182,7 @@ int     get_command_line(char **line)
             if (ft_strncmp(*line, "", 1) == 0)
             {
                 if (!ft_strequ(g_minishell.read_next, PIPE))
-                    ft_exit();
+                    ft_exit(NULL);
                 ft_syntax_error("\x4");
                 break;
             }
@@ -206,6 +233,8 @@ char *get_from_env(char *s)
 
 int     main(int argc, char **argv, char **env)
 {
+    char    *old_cmd;
+
     g_env.env_head = ft_array_to_lst(env);
     g_env.path = ft_split(get_path(), ':');
     argc = 0;
@@ -231,9 +260,8 @@ int     main(int argc, char **argv, char **env)
             // g_minishell.command_line = get_command_line();
             get_command_line(&g_minishell.command_line);
         }
-        char *tmp = g_minishell.command_line;
-        g_minishell.command_line = ft_convert_env(tmp);
-        free(tmp);
+        old_cmd = g_minishell.command_line;
+        g_minishell.command_line = ft_convert_env(old_cmd);
         // get_next_line(0, &g_minishell.command_line);
         // if (r == 0 && !g_minishell.command_line)
             // ft_exit();
@@ -263,6 +291,7 @@ int     main(int argc, char **argv, char **env)
         if (!ft_strequ(g_minishell.read_next, PIPE))
             ft_lstclear(&g_minishell.cmd_head, ft_free_command);
         free(g_minishell.command_line);
+        free(old_cmd);
         g_minishell.command_line = NULL;
     }
     return (g_minishell.return_code);
