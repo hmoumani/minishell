@@ -12,6 +12,22 @@
 
 #include "../../includes/minishell.h"
 
+int to_skip(char *s)
+{
+    int i;
+
+    i = 1;
+    if (s[0] != '-')
+        return (0);
+    while (s[i])
+    {
+        if (s[i] != 'n')
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 void ft_echo(char **argv)
 {
     int i;
@@ -22,7 +38,7 @@ void ft_echo(char **argv)
         return ;
     }
     i = 1;
-    while (!strcmp(argv[i], "-n"))
+    while (to_skip(argv[i]))
     {
         i++;
     }

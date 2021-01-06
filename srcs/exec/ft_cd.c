@@ -21,7 +21,10 @@ int  ft_cd(char **argv)
 
 	to_directory = !argv[1] ? get_from_env("HOME") : argv[1];
 	if (!(pdir = opendir(to_directory)))
+	{
+		ft_fprintf(2, "minishell: cd: %s: %s\n", to_directory, strerror(errno));
 		return (1);
+	}
 	if (pdir != NULL)
 	{
         add_element("OLDPWD", ft_strdup(get_from_env("PWD")));
