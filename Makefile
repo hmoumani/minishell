@@ -15,7 +15,7 @@ NAME=minishell
 SRC = srcs/minishell.c srcs/ft_sh_split.c srcs/handle_cmd.c srcs/handle_sig.c \
 	srcs/redirect.c srcs/handle_exec.c srcs/env_var.c srcs/exec/ft_cd.c srcs/exec/ft_echo.c \
 	srcs/exec/ft_export.c srcs/exec/ft_pwd.c srcs/exec/ft_unset.c \
-	srcs/exec/ft_env.c srcs/exec/ft_exit.c
+	srcs/exec/ft_env.c srcs/exec/ft_exit.c srcs/exec/ft_export_outil.c srcs/exec/ft_export_outil1.c
 SRC += gnl/get_next_line.c
 
 OBJ = $(SRC:.c=.o)

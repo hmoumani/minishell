@@ -12,19 +12,19 @@
 
 #include "../../includes/minishell.h"
 
-void ft_env(char **argv)
+void	ft_env(char **argv)
 {
-    t_list *curr;
+	t_list *curr;
 
-    curr = g_env.env_head;
-    argv = NULL;
-    while (curr)
-    {
-        if (ft_strchr(curr->content, '='))
-        {
-            ft_putstr_fd(curr->content, 1);
-            ft_putstr_fd("\n", 1);
-        }
-        curr = curr->next;
-    }
+	curr = g_env.env_head;
+	argv = NULL;
+	while (curr)
+	{
+		if (ft_strchr(curr->content, '='))
+		{
+			ft_putstr_fd(curr->content, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		curr = curr->next;
+	}
 }

@@ -12,46 +12,40 @@
 
 #include "../../includes/minishell.h"
 
-int customized_len(char *s)
+int		customized_len(char *s)
 {
-    int len;
+	int len;
 
-    len = 0;
-    while (s[len] && s[len] != '=')
-    {
-        len++;
-    }
-    return (len);
+	len = 0;
+	while (s[len] && s[len] != '=')
+	{
+		len++;
+	}
+	return (len);
 }
 
-void deleteNode(char *s) 
-{ 
-    // Store head node 
-    t_list *temp = g_env.env_head, *prev; 
-  
-    // If head node itself holds the key to be deleted 
-    if (temp != NULL && !strncmp(temp->content, s, customized_len(temp->content))) 
-    { 
-        g_env.env_head = temp->next;   // Changed head 
-        ft_lstdelone(temp, free);
-        return; 
-    } 
-  
-    // Search for the key to be deleted, keep track of the 
-    // previous node as we need to change 'prev->next' 
-    while (temp != NULL && strncmp(temp->content, s, customized_len(temp->content))) 
-    {
-        prev = temp; 
-        temp = temp->next; 
-    } 
-  
-    // If key was not present in linked list 
-    if (temp == NULL) return; 
-  
-    // Unlink the node from linked list 
-    prev->next = temp->next; 
-  
-    ft_lstdelone(temp, free);  // Free memory 
+void	delete_node(char *s)
+{
+	t_list	*tmp;
+	t_list	*prev;
+
+	tmp = g_env.env_head;
+	if (tmp != NULL && !strncmp(tmp->content, s, customized_len(tmp->content)))
+	{
+		g_env.env_head = tmp->next;
+		ft_lstdelone(tmp, free);
+		return ;
+	}
+	while (tmp != NULL && strncmp(tmp->content, s,
+	customized_len(tmp->content)))
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	if (tmp == NULL)
+		return ;
+	prev->next = tmp->next;
+	ft_lstdelone(tmp, free);
 }
 
 int		ft_unset(char **argv)
@@ -61,18 +55,19 @@ int		ft_unset(char **argv)
 
 	i = 1;
 	ret = 0;
-    if (!argv[1])
-        return (0);
+	if (!argv[1])
+		return (0);
 	while (argv[i])
 	{
 		if (!is_valid_identifier(argv[i]))
 		{
-			ft_fprintf(2, "minishell: unset: `%s': not a valid identifier\n", argv[i]);
+			ft_fprintf(2, "minishell: unset: `%s': not a valid \
+			identifier\n", argv[i]);
 			ret = 1;
 			i++;
 			continue ;
 		}
-		deleteNode(argv[i]);
+		delete_node(argv[i]);
 		i++;
 	}
 	return (ret);

@@ -12,46 +12,46 @@
 
 #include "../../includes/minishell.h"
 
-int to_skip(char *s)
+int		to_skip(char *s)
 {
-    int i;
+	int i;
 
-    i = 1;
-    if (s[0] != '-')
-        return (0);
-    while (s[i])
-    {
-        if (s[i] != 'n')
-            return (0);
-        i++;
-    }
-    return (1);
+	i = 1;
+	if (s[0] != '-')
+		return (0);
+	while (s[i])
+	{
+		if (s[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-void ft_echo(char **argv)
+void	ft_echo(char **argv)
 {
-    int i;
-    int n;
+	int i;
+	int n;
 
-    n = 0;
-    if (!argv[1])
-    {
-        ft_putstr_fd("\n", 1);
-        return ;
-    }
-    i = 1;
-    while (argv[i] && to_skip(argv[i]))
-    {
-        n = 1;
-        i++;
-    }
-    while (argv[i])
-    {
-        ft_putstr_fd(argv[i], 1);
-        i++;
-        if (argv[i])
-            ft_putstr_fd(" ", 1);
-    }
-    if (!n)
-        ft_putstr_fd("\n", 1);
+	n = 0;
+	if (!argv[1])
+	{
+		ft_putstr_fd("\n", 1);
+		return ;
+	}
+	i = 1;
+	while (argv[i] && to_skip(argv[i]))
+	{
+		n = 1;
+		i++;
+	}
+	while (argv[i])
+	{
+		ft_putstr_fd(argv[i], 1);
+		i++;
+		if (argv[i])
+			ft_putstr_fd(" ", 1);
+	}
+	if (!n)
+		ft_putstr_fd("\n", 1);
 }
