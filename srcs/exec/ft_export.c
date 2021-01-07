@@ -197,6 +197,7 @@ void add_element(char *key, char *value)
     	free(pfree);
 	}
     export_normal(holder);
+    free(holder);
 }
 
 void export_append(char *string, char **sp, int len)

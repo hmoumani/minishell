@@ -17,6 +17,7 @@ int  ft_cd(char **argv)
     DIR		*pdir;
     // char *pfree;
 	char	*to_directory;
+	char	*pfree;
 	char	*current_directory;
 
 	if (argv[1] && *argv[1] == 0)
@@ -34,19 +35,22 @@ int  ft_cd(char **argv)
 	}
 	if (pdir != NULL)
 	{
-        add_element("OLDPWD", ft_strdup(get_from_env("PWD")));
+        add_element("OLDPWD", get_from_env("PWD"));
 		chdir(to_directory);
 		current_directory = getcwd(NULL, 0);
         
 		if (current_directory == NULL)
         {
-            add_element("PWD", ft_strjoin(get_from_env("PWD"), "/."));
+			pfree = ft_strjoin(get_from_env("PWD"), "/.");
+            add_element("PWD", pfree);
+			free(pfree);
 			ft_fprintf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
         }
 		else
 		{
 			add_element("PWD", current_directory);
 		}
+		free(current_directory);
 	}
 	if (pdir)
 		closedir(pdir);

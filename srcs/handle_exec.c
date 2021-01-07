@@ -100,7 +100,8 @@ int ft_try_path(char **argv)
     pfree = g_env.path;
     g_env.path = ft_split(get_path(), ':');
     free(pfree);
-    // printf("%s", argv[0]);
+    if (!g_env.path)
+        return (1);
     while (g_env.path[i])
     {
         s = ft_strjoin(g_env.path[i], "/");
@@ -135,7 +136,10 @@ int ft_redirect(char **argv)
         if (!ft_try_path(argv))
             return (0);
     }
-    ft_fprintf(2, "minishell: %s: command not found\n", argv[0]);
+    if (!get_path() || *get_path() == 0)
+        ft_fprintf(2, "minishell: %s: No such file or directory\n", argv[0]);
+    else
+        ft_fprintf(2, "minishell: %s: command not found\n", argv[0]);
     return (1);
 }
 
