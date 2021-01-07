@@ -62,6 +62,20 @@ t_list *lstchr(t_list *head, char *s)
     return (NULL);
 }
 
+int in(char *s, char c)
+{
+    int i;
+
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == c)
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
 void ft_print_path(char *s)
 {
     int i;
@@ -80,6 +94,8 @@ void ft_print_path(char *s)
     ft_putchar_fd('"', 1);
     while (s[i])
     {
+        if (in("\"$\\", s[i]))
+            ft_putchar_fd('\\', 1);
         ft_putchar_fd(s[i], 1);
         i++;
     }

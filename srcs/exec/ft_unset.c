@@ -54,7 +54,26 @@ void deleteNode(char *s)
     ft_lstdelone(temp, free);  // Free memory 
 }
 
-void ft_unset(char **argv)
+int		ft_unset(char **argv)
 {
-    deleteNode(argv[1]);
+	int i;
+	int ret;
+
+	i = 1;
+	ret = 0;
+    if (!argv[1])
+        return (0);
+	while (argv[i])
+	{
+		if (!is_valid_identifier(argv[i]))
+		{
+			ft_fprintf(2, "minishell: unset: `%s': not a valid identifier\n", argv[i]);
+			ret = 1;
+			i++;
+			continue ;
+		}
+		deleteNode(argv[i]);
+		i++;
+	}
+	return (ret);
 }

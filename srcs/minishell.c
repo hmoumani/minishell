@@ -282,6 +282,7 @@ int     main(int argc, char **argv, char **env)
     g_env.env_head = ft_array_to_lst(env);
     g_env.path = ft_split(get_path(), ':');
     add_element("PWD", getcwd(NULL, 0));
+    add_element("SHLVL", ft_strdup("1"));
     argc = 0;
     // argv = NULL;
     signal(SIGINT, handle_sigint);

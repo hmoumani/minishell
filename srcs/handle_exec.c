@@ -79,7 +79,7 @@ int treat_cmd(char **argv, int cmd_id)
     else if (cmd_id == 4)
         return(ft_export(argv));
     else if (cmd_id == 5)
-        ft_unset(argv);
+        return (ft_unset(argv));
     else if (cmd_id == 6)
         ft_env(argv);
     else if (cmd_id == 7)
