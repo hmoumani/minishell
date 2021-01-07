@@ -50,9 +50,9 @@ void	delete_node(char *s)
 
 int		ft_unset(char **argv)
 {
-	int i;
-	int ret;
-	char *s;
+	int		i;
+	int		ret;
+	char	*s;
 
 	s = "not a valid identifier";
 	i = 1;
