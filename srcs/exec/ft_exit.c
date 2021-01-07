@@ -43,14 +43,15 @@ int		ft_isnumber(char *s)
 
 void	exit_value(int ret, char **argv)
 {
-	int error;
+	int		error;
+	char	*s;
 
 	error = 0;
+	s = "numeric argument required";
 	ret = ft_custom_atoi(argv[1], 0, &error);
 	if (error)
 	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument \
-		required\n", argv[1]);
+		ft_fprintf(2, "minishell: exit: %s: %s\n", argv[1], s);
 		exit(255);
 	}
 	if (ret > 255)
@@ -63,14 +64,16 @@ void	exit_value(int ret, char **argv)
 
 int		ft_exit(char **argv)
 {
+	char *s;
+
+	s = "numeric argument required";
 	if (!argv || !argv[1])
 	{
 		exit(g_minishell.return_code);
 	}
 	if (!ft_isnumber(argv[1]))
 	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument \
-		required\n", argv[1]);
+		ft_fprintf(2, "minishell: exit: %s: %s\n", argv[1], s);
 		exit(255);
 	}
 	if (ft_ptr_str_len(argv) > 2)

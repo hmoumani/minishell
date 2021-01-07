@@ -88,8 +88,10 @@ int				export_all(char **argv)
 	char	**sp;
 	int		i;
 	int		ret;
+	char	*s;
 
 	ret = 0;
+	s = "not a valid identifier";
 	i = 1;
 	while (argv[i])
 	{
@@ -97,8 +99,7 @@ int				export_all(char **argv)
 		if (!is_valid_identifier(sp[0]) || argv[i][0] == '=')
 		{
 			g_minishell.return_code = 1;
-			ft_fprintf(2, "minishell: export: `%s': not a \
-			valid identifier\n", argv[i]);
+			ft_fprintf(2, "minishell: export: `%s': %s\n", argv[i], s);
 			i++;
 			ret = 1;
 			continue ;

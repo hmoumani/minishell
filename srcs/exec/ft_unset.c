@@ -52,7 +52,9 @@ int		ft_unset(char **argv)
 {
 	int i;
 	int ret;
+	char *s;
 
+	s = "not a valid identifier";
 	i = 1;
 	ret = 0;
 	if (!argv[1])
@@ -61,8 +63,7 @@ int		ft_unset(char **argv)
 	{
 		if (!is_valid_identifier(argv[i]))
 		{
-			ft_fprintf(2, "minishell: unset: `%s': not a valid \
-			identifier\n", argv[i]);
+			ft_fprintf(2, "minishell: unset: `%s': %s\n", argv[i], s);
 			ret = 1;
 			i++;
 			continue ;
