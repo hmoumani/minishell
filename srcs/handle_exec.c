@@ -179,9 +179,9 @@ void    execute_command(t_command *cmd)
 
 void    execute_commands()
 {
-    t_list      *lst;
+    t_list  *lst;
     t_command   *cmd;
-    int			ret;
+    int         ret;
     char        **argv;
     int         n = 0;
 
@@ -190,14 +190,18 @@ void    execute_commands()
 	{
         cmd = (t_command *)lst->content;
         if (!(cmd = (t_command *)lst->content) || !cmd->argv)
-            break;
-        argv = ft_lst_to_array(cmd->argv);
-        if (cmd->inRed == 0)
         {
-            while (n--)
-                ft_wait();
-            n = 0;
+            lst = lst->next;
+            continue;
         }
+        argv = ft_lst_to_array(cmd->argv);
+        // ft_fprintf(2, "CMD: %s %s\n", argv[0], argv[1]);
+        // if (cmd->inRed == 0)
+        // {
+        //     while (n--)
+        //         ft_wait();
+        //     n = 0;
+        // }
         if ((ret = is_command(argv[0])))
         {
             open_redirect_files(cmd);
@@ -228,6 +232,11 @@ void    execute_commands()
                 signal(SIGINT, SIG_DFL);
                 // print_command(cmd);
                 execute_command(lst->content);
+            }
+            else if (ret < 0)
+            {
+                ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+                exit(128);
             }
             else
             {

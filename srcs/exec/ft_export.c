@@ -91,18 +91,17 @@ void show_all_export(char *start_with)
     t_list *curr;
 
     curr = g_env.env_head;
-	start_with = NULL;
     while (curr)
     {
-		ft_fprintf(2, "%s\n", curr->content);
+		// ft_fprintf(2, "%s\n", curr->content);
         if (!strncmp(curr->content, "_=", 2))
         {
             curr = curr->next;
             continue ;
         }
-        // ft_putstr_fd(start_with, 1);
-        // ft_print_path(curr->content);
-        // ft_putstr_fd("\n", 1);
+        ft_putstr_fd(start_with, 1);
+        ft_print_path(curr->content);
+        ft_putstr_fd("\n", 1);
         curr = curr->next;
     }
 }

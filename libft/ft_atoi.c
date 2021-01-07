@@ -111,12 +111,14 @@ int		ft_custom_atoi(const char *str, int i, int *error)
 	while (str[0] == '0')
 		str++;
 	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
-		result = result * 10 + (str[i++] - '0');
-	if ((result > 9223372036854775808ULL && sign == -1) ||
-	(result >= 9223372036854775808ULL && sign == 1))
 	{
-		*error = 1;
-		return (sign == 1 ? -1 : 0);
+		result = result * 10 + (str[i++] - '0');
+		if ((result > 9223372036854775808ULL && sign == -1) ||
+		(result >= 9223372036854775808ULL && sign == 1))
+		{
+			*error = 1;
+			return (sign == 1 ? -1 : 0);
+		}
 	}
 	return (result * sign);
 }

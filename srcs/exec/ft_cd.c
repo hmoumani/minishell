@@ -19,7 +19,14 @@ int  ft_cd(char **argv)
 	char	*to_directory;
 	char	*current_directory;
 
-	to_directory = !argv[1] ? get_from_env("HOME") : argv[1];
+	if (argv[1] && *argv[1] == 0)
+		argv[1] = ".";
+	to_directory = !argv[1] || ft_strequ(argv[1], "~") ? get_from_env("HOME") : argv[1];
+	if (to_directory == NULL)
+	{
+		ft_fprintf(2, "minishell: cd: HOME not set\n");
+		return (1);
+	}
 	if (!(pdir = opendir(to_directory)))
 	{
 		ft_fprintf(2, "minishell: cd: %s: %s\n", to_directory, strerror(errno));

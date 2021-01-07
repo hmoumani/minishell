@@ -31,15 +31,18 @@ int to_skip(char *s)
 void ft_echo(char **argv)
 {
     int i;
+    int n;
 
+    n = 0;
     if (!argv[1])
     {
         ft_putstr_fd("\n", 1);
         return ;
     }
     i = 1;
-    while (to_skip(argv[i]))
+    while (argv[i] && to_skip(argv[i]))
     {
+        n = 1;
         i++;
     }
     while (argv[i])
@@ -49,6 +52,6 @@ void ft_echo(char **argv)
         if (argv[i])
             ft_putstr_fd(" ", 1);
     }
-    if (strcmp(argv[1], "-n"))
+    if (!n)
         ft_putstr_fd("\n", 1);
 }

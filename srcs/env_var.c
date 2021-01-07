@@ -28,22 +28,27 @@ char    *ft_get_var(char *name)
     return (ft_strdup(res + 1));
 }
 
-char    *ft_convert_env(char *str)
+char    *ft_convert_env(char *str, int i)
 {
-    int     i;
+    // int     i;
     char    *res;
     char    *tmp;
     char    *var;
     int     len;
 
-    i = 0;
-    res = ft_strdup("");
+    // i = 0;
+    // res = ft_strdup("");
+    res = ft_substr(str, 0, i);
 
-    while (str[i])
+    while (str[i] && !ft_on_char(str, i, ";"))
     {
         if (ft_on_char(str, i, "$") && (len = ft_word_length(str + i + 1, env_sep)) > 0) {
             i++;
+            if (ft_on_char(str, i, "0123456789") && i++)
+                continue;
             // len = get_next_word(&str[i], env_sep);
+            g_minishell.env_var = 1;
+
             tmp = ft_substr(str, i, len);
             i += len;
             var = ft_get_var(tmp);
@@ -66,6 +71,12 @@ char    *ft_convert_env(char *str)
             free(tmp);
             i++;
         }
+    }
+    if (str[i])
+    {
+        tmp = res;
+        res = ft_strjoin(res, str + i);
+        free(tmp);
     }
     return (res);
 }
