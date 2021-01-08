@@ -36,6 +36,7 @@ void	ft_echo(char **argv)
 	n = 0;
 	if (!argv[1])
 	{
+		add_element("_", argv[0]);
 		ft_putstr_fd("\n", 1);
 		return ;
 	}
@@ -47,11 +48,11 @@ void	ft_echo(char **argv)
 	}
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], 1);
-		i++;
+		ft_putstr_fd(argv[i++], 1);
 		if (argv[i])
 			ft_putstr_fd(" ", 1);
 	}
+	add_element("_", argv[i - 1]);
 	if (!n)
 		ft_putstr_fd("\n", 1);
 }

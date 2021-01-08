@@ -34,7 +34,10 @@ void			show_all_export(char *start_with)
 int				ft_export(char **argv)
 {
 	if (!argv[1])
+	{
 		show_all_export("declare -x ");
+		add_element("key", argv[0]);
+	}
 	else
 		return (export_all(argv));
 	return (0);

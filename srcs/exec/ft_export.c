@@ -95,6 +95,7 @@ int				export_all(char **argv)
 	i = 1;
 	while (argv[i])
 	{
+		add_element("_", argv[i]);
 		sp = ft_split(argv[i], '=');
 		if (!is_valid_identifier(sp[0]) || argv[i][0] == '=')
 		{
@@ -104,9 +105,9 @@ int				export_all(char **argv)
 			ret = 1;
 			continue ;
 		}
-		redirect(sp, argv, i);
+		add_element("_", sp[0]);
+		redirect(sp, argv, i++);
 		ft_free_split(sp);
-		i++;
 	}
 	return (ret);
 }
