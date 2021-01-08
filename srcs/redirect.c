@@ -20,7 +20,7 @@ int     open_file(char *file, int flags, char *type)
 
     cmd = g_minishell.cmd_head->content;
     red = ft_strequ(type, INPUT_RED) ? cmd->inRed : cmd->outRed;
-    if (red != 1)
+    if (red > 2)
         close(red);
     if (ft_strequ(type, INPUT_RED))
         fd = open(file, flags);
@@ -29,8 +29,9 @@ int     open_file(char *file, int flags, char *type)
     
     if (fd == -1) {  
         ft_fprintf(2, "minishell: %s: %s\n", file, strerror(errno));
+        g_minishell.return_code = 1;
         g_minishell.stat = 0;
-        exit(1);
+        // exit(1);
     }
     return fd;
 }
@@ -47,19 +48,19 @@ void    open_red_file(void *f, void *c)
     if (red_file->type == 0)
     {
         fd = open_file(red_file->file, O_RDONLY, INPUT_RED);
-        if (fd != -1)
+        // if (fd != -1)
             cmd->inRed = fd;
     }
     else if (red_file->type == 1)
     {
         fd = open_file(red_file->file, O_WRONLY | O_CREAT | O_TRUNC, OUTPUT_RED);
-        if (fd != -1)
+        // if (fd != -1)
             cmd->outRed = fd;
     }
     else if (red_file->type == 2)
     {
         fd = open_file(red_file->file, O_WRONLY | O_CREAT | O_APPEND, APP_OUTPUT_RED);
-        if (fd != -1)
+        // if (fd != -1)
             cmd->outRed = fd;
     }
 

@@ -1,0 +1,16 @@
+Makefile
+README.md
+ft_printf
+gnl
+includes
+libft
+minishell
+minishell-tester
+minishell.dSYM
+minishell_test
+srcs
+test.c
+test.py
+test2.c
+tests
+w
