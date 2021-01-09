@@ -38,7 +38,7 @@ void	move_dir(DIR *pdir, char *to_dir)
 	}
 }
 
-int	ft_env_change(DIR **pdir, char **to_dir, struct stat sb)
+int		ft_env_change(DIR **pdir, char **to_dir, struct stat sb)
 {
 	if (!(*pdir = opendir(*to_dir)))
 	{
