@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 14:26:55 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:56:55 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 14:59:48 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ char	*ft_convert_env(char *str)
 		(len = ft_word_length(str + i + 1, g_env_sep)) > 0)
 		{
 			i++;
-			if (ft_on_char(str, i, "0123456789") && i++)
+			if (ft_strchr("0123456789", str[i]) && i++)
 				continue;
 			res = ft_replace_env(str, res, &i, len);
 		}
-		else if (ft_on_char(str, i + 1, "?"))
+		else if (str[i + 1] == '?')
 			res = ft_lastcmd_return_env(res, &i);
 		else
 			res = ft_append(str, res, &i);

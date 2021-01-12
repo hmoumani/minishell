@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 12:53:22 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:48:51 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 15:15:51 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,7 @@ void			ft_lstadd(t_list **lst, t_list *new);
 t_list			*ft_lstremove(t_list **lst, t_list *de_l, void (*del)(void *));
 void			execute_command(t_command *cmd);
 void			ft_parse(void);
+void			ft_check_perm(char **e_a, char **argv, struct stat sb, int ret);
+void			ft_mprint(char *s1, char *s2, char *s3, char *s4);
 
 #endif

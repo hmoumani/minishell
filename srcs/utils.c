@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:00:17 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:04:01 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 12:23:46 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			ft_endwith_pipe(void)
 	i = ft_strlen(g_minishell.command_line) - 1;
 	while (i >= 0 && g_minishell.command_line[i] == ' ')
 		i--;
-	if (i >= 0 && g_minishell.command_line[i] == '|')
+	if (i >= 0 && ft_on_char(g_minishell.command_line, i, "|"))
 		return (1);
 	return (0);
 }

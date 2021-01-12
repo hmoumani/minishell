@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:06:10 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:14:51 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 11:41:35 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int			open_file(char *file, int flags, char *type)
 		g_minishell.return_code = 1;
 		g_minishell.stat = 0;
 	}
+	free(file);
 	return (fd);
 }
 

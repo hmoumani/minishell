@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 17:14:39 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:10:29 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 15:16:02 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static void	ft_system_cmd(t_command *cmd, int ret, int *n)
 	}
 	else if (ret < 0)
 	{
-		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+		// ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+		ft_mprint("minishell: ", "fork", ": ", strerror(errno));
 		exit(128);
 	}
 	else

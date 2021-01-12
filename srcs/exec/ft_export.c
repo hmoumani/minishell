@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:36 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:16:37 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 11:42:29 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int				export_all(char **argv)
 			ft_fprintf(2, "minishell: export: `%s': %s\n", argv[i], s);
 			i++;
 			ret = 1;
+			ft_free_split(sp);
 			continue ;
 		}
 		redirect(sp, argv, i);
