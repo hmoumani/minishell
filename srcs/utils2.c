@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 17:15:07 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:04:28 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 17:36:48 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ t_list		*ft_array_to_lst(char **array)
 	return (head);
 }
 
-void		ft_lstadd(t_list **lst, t_list *new)
+void		ft_lstadd(t_list *lst, t_list *new)
 {
-	if (*lst == NULL || new == NULL)
+	if (lst == NULL || new == NULL)
 		return ;
-	new->next = (*lst)->next;
-	(*lst)->next = new;
+	new->next = lst->next;
+	lst->next = new;
 }
 
 t_list		*ft_lstremove(t_list **lst, t_list *del_lst, void (*del)(void *))
@@ -81,7 +81,7 @@ t_list		*ft_lstremove(t_list **lst, t_list *del_lst, void (*del)(void *))
 	return (*lst);
 }
 
-int			ft_word_length(const char *s, char *c)
+int			ft_word_length(const char *s, char *c, int sp)
 {
 	int		i;
 	char	quote[2];
@@ -94,6 +94,8 @@ int			ft_word_length(const char *s, char *c)
 		{
 			if (ft_on_char(s, i, "'\""))
 				quote[0] = quote[0] ? 0 : s[i];
+			if (sp && !ft_isalnum(s[i]) && s[i] != '_')
+				break ;
 			if (ft_on_char(s, i, c))
 				break ;
 		}

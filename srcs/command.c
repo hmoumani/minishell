@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:48:00 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:48:06 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 17:36:58 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			ft_handle_cmd(char *str)
 	char		*arg;
 	t_command	*cmd;
 
-	len = ft_word_length(str, SEP);
+	len = ft_word_length(str, SEP, 0);
 	str = ft_substr(str, 0, len);
 	arg = str;
 	if (ft_strequ(g_minishell.read_next, INPUT_RED))

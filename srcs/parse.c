@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:43:20 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:44:35 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 17:37:18 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void		ft_parse(void)
 	{
 		if (g_minishell.command_line[g_minishell.pos] == 0)
 			break ;
-		len = ft_word_length(g_minishell.command_line + g_minishell.pos, SEP);
+		len = ft_word_length(g_minishell.command_line +
+		g_minishell.pos, SEP, 0);
 		ft_precess_cmd(g_minishell.command_line + g_minishell.pos);
 		g_minishell.pos += len;
 	}

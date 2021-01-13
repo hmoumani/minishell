@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:30 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:16:31 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 18:46:54 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int				ft_export(char **argv)
 {
 	if (!argv[1])
 		show_all_export("declare -x ");
-	else
+	else if (g_minishell.export == 0)
 		return (export_all(argv));
 	return (0);
 }

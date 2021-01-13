@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:29:56 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 12:50:42 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 19:12:58 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void		ft_init(char **env)
 	char	*cwd;
 
 	g_env.env_head = ft_array_to_lst(env);
-	g_env.path = ft_split(get_path(), ':');
 	cwd = getcwd(NULL, 0);
 	add_element("PWD", cwd);
 	free(cwd);
@@ -90,14 +89,14 @@ int			main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (ft_strequ(argv[1], "-c"))
-        {
-            ft_cmd_init();
-            g_minishell.command_line = ft_strdup(argv[2]);
-            // ft_fprintf(2, "%s %s\n", argv[1], g_minishell.command_line);
-            ft_parse();
-            ft_execute(1);
-            exit(g_minishell.return_code);
-        }
+		{
+			ft_cmd_init();
+			g_minishell.command_line = ft_strdup(argv[2]);
+			// ft_fprintf(2, "%s %s\n", argv[1], g_minishell.command_line);
+			ft_parse();
+			ft_execute(1);
+			exit(g_minishell.return_code);
+		}
 		show_prompt(NULL);
 		ft_cmd_init();
 		g_minishell.command_line = get_command_line();

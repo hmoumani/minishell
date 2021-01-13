@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:38:33 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:17:11 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 15:33:23 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,37 @@ void			show_prompt(char *type)
 	}
 	else if (ft_strequ(type, PIPE))
 	{
-		ft_fprintf(2, "pipe > ");
+		ft_putstr_fd("pipe > ", 2);
 	}
+}
+
+int				is_command(char *s)
+{
+	if (ft_strequ(s, "echo"))
+		return (1);
+	if (ft_strequ(s, "cd"))
+		return (2);
+	if (ft_strequ(s, "pwd"))
+		return (3);
+	if (ft_strequ(s, "export"))
+		return (4);
+	if (ft_strequ(s, "unset"))
+		return (5);
+	if (ft_strequ(s, "env"))
+		return (6);
+	if (ft_strequ(s, "exit"))
+		return (7);
+	return (0);
+}
+
+char			*join_path(char *s, char *s1, char *s2)
+{
+	char *temp;
+	char *pfree;
+
+	temp = ft_strjoin(s, s1);
+	pfree = temp;
+	temp = ft_strjoin(temp, s2);
+	free(pfree);
+	return (temp);
 }

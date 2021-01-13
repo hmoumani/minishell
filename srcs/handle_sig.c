@@ -6,11 +6,23 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 17:57:12 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 18:19:44 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/12 15:23:08 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	is_sigquit(int sig)
+{
+	if (!g_minishell.forked)
+		ft_putstr_fd("\b\b  \b\b", 1);
+	else
+	{
+		ft_putstr_fd("Quit: ", 2);
+		ft_putnbr_fd(sig, 2);
+		write(2, "\n", 1);
+	}
+}
 
 void	handle_sigint(int sig)
 {
@@ -32,9 +44,6 @@ void	handle_sigint(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		if (!g_minishell.forked)
-			ft_putstr_fd("\b\b  \b\b", 1);
-		else
-			ft_fprintf(2, "Quit: %d\n", sig);
+		is_sigquit(sig);
 	}
 }
