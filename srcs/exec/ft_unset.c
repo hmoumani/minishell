@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:41 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:16:51 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:43:42 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		ft_unset(char **argv)
 	{
 		if (!is_valid_identifier(argv[i]))
 		{
-			ft_fprintf(2, "minishell: unset: `%s': %s\n", argv[i], s);
+			ft_mprint("minishell: unset: `", argv[i], "': ", s);
 			ret = 1;
 			i++;
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:06:10 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 17:06:12 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:56:33 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			open_file(char *file, int flags, char *type)
 		fd = open(file, flags, 0644);
 	if (fd == -1)
 	{
-		ft_fprintf(2, "minishell: %s: %s\n", file, strerror(errno));
+		ft_mprint("minishell: ", file, ": ", strerror(errno));
 		g_minishell.return_code = 1;
 		g_minishell.stat = 0;
 	}

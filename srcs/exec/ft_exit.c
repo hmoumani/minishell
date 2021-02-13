@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:16 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:16:17 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:43:34 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	exit_value(int ret, char **argv)
 	ret = ft_custom_atoi(argv[1], 0, &error);
 	if (error)
 	{
-		ft_fprintf(2, "minishell: exit: %s: %s\n", argv[1], s);
+		ft_mprint("minishell: exit: ", argv[1], ": ", s);
 		exit(255);
 	}
 	if (ret > 255)
@@ -74,12 +74,12 @@ int		ft_exit(char **argv)
 	}
 	if (!ft_isnumber(argv[1]))
 	{
-		ft_fprintf(2, "minishell: exit: %s: %s\n", argv[1], s);
+		ft_mprint("minishell: exit: ", argv[1], ": ", s);
 		exit(255);
 	}
 	if (ft_ptr_str_len(argv) > 2)
 	{
-		ft_fprintf(2, "minishell: exit: too many arguments\n");
+		ft_mprint("minishell: ", "exit: ", NULL, "too many arguments");
 		exit(1);
 	}
 	exit_value(0, argv);

@@ -6,7 +6,7 @@
 #    By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/10 10:53:07 by ojoubout          #+#    #+#              #
-#    Updated: 2021/01/12 18:18:09 by ojoubout         ###   ########.fr        #
+#    Updated: 2021/01/13 11:07:08 by ojoubout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,26 +21,22 @@ SRC += gnl/get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 
-FLAGS=-Wall -Wextra -Werror -g #-fsanitize=address
+FLAGS=-Wall -Wextra -Werror
 
 all: $(NAME)
 
-CC=clang
+CC=gcc
 
 $(NAME):
 	@make CC=$(CC) -C libft bonus
-	@make CC=$(CC) -C ft_printf all
-	@$(CC) $(FLAGS) $(SRC) ft_printf/libftprintf.a libft/libft.a -Iincludes -o $(NAME)
+	@$(CC) $(FLAGS) $(SRC) libft/libft.a -Iincludes -o $(NAME)
 
 clean:
 	@make -C libft clean
-	@make -C ft_printf clean
 
 
 fclean: clean
 	@make -C libft fclean
-	@make -C ft_printf fclean
-
 	@rm -rf $(NAME)
 
 re: fclean all

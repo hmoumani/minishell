@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:38:33 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 15:33:23 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:56:10 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ void			show_prompt(char *type)
 	if (!type)
 	{
 		cwd = ft_getcwd();
-		ft_fprintf(2, BBLU "%s %d%s> "RESET, cwd, g_minishell.return_code,
-				g_minishell.return_code ? BRED : BGRN);
+		ft_mprint(BBLU, cwd, " ", NULL);
+		ft_mprint(g_minishell.return_code ? BRED : BGRN, "> ", RESET, NULL);
 		free(cwd);
 	}
 	else if (ft_strequ(type, PIPE))
-	{
 		ft_putstr_fd("pipe > ", 2);
-	}
 }
 
 int				is_command(char *s)

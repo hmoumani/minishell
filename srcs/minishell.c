@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 18:29:56 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 19:12:58 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 11:00:46 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,13 @@ char		*get_command_line(void)
 {
 	char	b;
 	int		r;
-	char	*line;
 
-	line = ft_strdup("");
+	g_minishell.command_line = ft_strdup("");
 	while ((r = read(0, &b, 1)) != -1)
 	{
 		if (r == 0)
 		{
-			if (ft_strncmp(line, "", 1) == 0)
+			if (ft_strncmp(g_minishell.command_line, "", 1) == 0)
 			{
 				if (!ft_strequ(g_minishell.read_next, PIPE))
 					ft_exit(NULL);
@@ -45,9 +44,9 @@ char		*get_command_line(void)
 		}
 		else if (b == '\n')
 			break ;
-		line = ft_strappend(line, b);
+		g_minishell.command_line = ft_strappend(g_minishell.command_line, b);
 	}
-	return (line);
+	return (g_minishell.command_line);
 }
 
 void		ft_execute(int f)
@@ -85,18 +84,9 @@ int			main(int argc, char **argv, char **env)
 
 	ft_init(env);
 	argc = 0;
-	// argv = NULL;
+	argv = NULL;
 	while (1)
 	{
-		if (ft_strequ(argv[1], "-c"))
-		{
-			ft_cmd_init();
-			g_minishell.command_line = ft_strdup(argv[2]);
-			// ft_fprintf(2, "%s %s\n", argv[1], g_minishell.command_line);
-			ft_parse();
-			ft_execute(1);
-			exit(g_minishell.return_code);
-		}
 		show_prompt(NULL);
 		ft_cmd_init();
 		g_minishell.command_line = get_command_line();

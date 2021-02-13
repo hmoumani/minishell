@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/13 12:53:22 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 17:37:37 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 11:02:42 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINISHELL_H
 # include "../libft/libft.h"
 # include "../gnl/get_next_line.h"
-# include "../ft_printf/ft_printf.h"
 # include <stdio.h>
 # include <signal.h>
 # include <string.h>

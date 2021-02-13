@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:36 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 11:42:29 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:43:38 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int				export_all(char **argv)
 		if (!is_valid_identifier(sp[0]) || argv[i][0] == '=')
 		{
 			g_minishell.return_code = 1;
-			ft_fprintf(2, "minishell: export: `%s': %s\n", argv[i], s);
+			ft_mprint("minishell: export: `", argv[i], "': ", s);
 			i++;
 			ret = 1;
 			ft_free_split(sp);

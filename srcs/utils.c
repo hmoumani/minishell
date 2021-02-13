@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 15:00:17 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/12 15:40:31 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:58:18 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char		*ft_strappend(char *str, char c)
 int			ft_syntax_error(char *token)
 {
 	if (*token == '\x4')
-		ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
+		ft_mprint("minishell: ", "syntax error", ": ",
+		"unexpected end of file");
 	else
 	{
 		if (*token == '\n')
@@ -60,8 +61,8 @@ int			ft_syntax_error(char *token)
 			token = ">>";
 		else
 			token[1] = 0;
-		ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n",
-		token);
+		ft_mprint("minishell: ", "syntax error near unexpected token `",
+		token, "'");
 	}
 	g_minishell.return_code = 258;
 	g_minishell.stat = 0;

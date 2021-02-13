@@ -6,7 +6,7 @@
 /*   By: ojoubout <ojoubout@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/11 19:16:11 by ojoubout          #+#    #+#             */
-/*   Updated: 2021/01/11 19:16:12 by ojoubout         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:43:22 by ojoubout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	move_dir(DIR *pdir, char *to_dir)
 			pfree = ft_strjoin(get_from_env("PWD"), "/.");
 			add_element("PWD", pfree);
 			free(pfree);
-			ft_fprintf(2, "cd: error retrieving current directory: getcwd: \
-			cannot access parent directories: %s\n", strerror(errno));
+			ft_mprint("cd :", "error retrieving current directory: ",
+			"getcwd: cannot access parent directories: ", strerror(errno));
 		}
 		else
 		{
@@ -51,7 +51,7 @@ int		ft_chdir(struct stat sb, char *to_dir)
 	}
 	else
 	{
-		ft_fprintf(2, "minishell: cd: %s: %s\n", to_dir, strerror(errno));
+		ft_mprint("minishell: cd: ", to_dir, ": ", strerror(errno));
 		return (1);
 	}
 }
@@ -68,7 +68,7 @@ int		ft_cd(char **argv)
 	? get_from_env("HOME") : argv[1];
 	if (to_dir == NULL)
 	{
-		ft_fprintf(2, "minishell: cd: HOME not set\n");
+		ft_mprint("minishell: ", "cd: ", NULL, "HOME not set");
 		return (1);
 	}
 	stat(argv[1], &sb);

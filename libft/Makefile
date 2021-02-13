@@ -6,7 +6,7 @@
 #    By: ojoubout <ojoubout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/09 22:19:28 by ojoubout          #+#    #+#              #
-#    Updated: 2019/11/01 17:07:57 by ojoubout         ###   ########.fr        #
+#    Updated: 2021/01/13 11:06:35 by ojoubout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ BOBJ=ft_lstnew_bonus.o ft_lstadd_front_bonus.o ft_lstsize_bonus.o \
 
 FLAGS=-Wall -Werror -Wextra
 
-CC=clang
+CC=gcc
 all: $(NAME)
 
 $(NAME):
